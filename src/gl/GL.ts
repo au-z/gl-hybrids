@@ -2,12 +2,9 @@ import * as THREE from 'three'
 
 const num = (str) => parseFloat(/\d+/.exec(str)?.[0] || '0')
 
-export interface Context {
-  init,
-  scene,
-}
 
-function GL(): Context {
+function GL() {
+  let instance
   let renderer, camera, scene, updater
 
   function animate(dt, updater) {
@@ -16,40 +13,40 @@ function GL(): Context {
     renderer.render(scene, camera)
   }
 
+  function onAttach({name, asset}) {
+    camera = asset
+    console.log('Registering camera: ', camera)
+    animate(null, updater)
+  }
+
   function init(host, {canvas}) {
     renderer = new GL.prototype.Renderer(host, {canvas})
-
-    camera = new GL.prototype.Camera(canvas.clientWidth, canvas.clientHeight)
-    camera.position.z = 5
-
-    window.addEventListener('resize', () => {
-      camera.aspect = canvas.clientWidth / canvas.clientHeight
-      camera.updateProjectionMatrix()
-
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false)
-    })
 
     scene = new THREE.Scene()
     scene.background = new THREE.Color(host.clearColor)
 
     updater = new GL.prototype.Updater()
-    animate(null, updater)
 
-    return {
-      scene,
+    window.addEventListener('resize', () => {
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false)
+    })
+
+    instance = {
       camera,
-      renderer,
+      canvas,
+      onAttach, // camera attach
       onUpdate: updater.register,
+      renderer,
+      scene,
     }
+
+    return instance
   }
 
   return {
-    init,
-  } as Context
+    getInstance: (host, {canvas}) => instance ? instance : init(host, {canvas}),
+  }
 }
-
-GL.prototype.Camera = (width: number, height: number) =>
-  new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
 
 GL.prototype.Renderer = (host, {canvas}) => {
   const renderer = new THREE.WebGLRenderer({canvas})

@@ -1,17 +1,19 @@
 if (process.env.NODE_ENV !== "production") module.hot.accept();
+import style from './style/main.styl'
 
 import {html, define} from 'hybrids'
-import GlCanvas from './gl-canvas.ts'
-import GlMesh from './gl-mesh.ts'
-
-import style from './style/main.styl'
+import * as glElements from './gl'
 
 define("app-root", {
   render: () => html`
     <gl-canvas width="100vw" height="100vh" clear-color="0x353843">
-      <gl-mesh name="cube"></gl-mesh>
+      <gl-camera type="perspective" fov="75" near="0.1" far="1000" position="${[0, 0, 5]}"></gl-camera>
+      <gl-mesh name="cube.01" position="${[0, 2, 0]}"></gl-mesh>
+      <gl-mesh name="cube.02" position="${[0, 0, 0]}"></gl-mesh>
+      <gl-mesh name="cube.03" position="${[0, -2, 0]}"></gl-mesh>
     </gl-canvas>
-  `.define({ GlCanvas, GlMesh})
+    <br>
+  `.define({...glElements})
 });
 
 const globalStyle = document.createElement('style')
