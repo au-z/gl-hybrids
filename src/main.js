@@ -11,6 +11,8 @@ define("app-root", {
       <gl-mesh name="cube.01" position="${[0, 2, 0]}"></gl-mesh>
       <gl-mesh name="cube.02" position="${[0, 0, 0]}"></gl-mesh>
       <gl-mesh name="cube.03" position="${[0, -2, 0]}"></gl-mesh>
+
+      <gl-point-light position="${[2, 3, 2]}" intensity="3" distance="0" decay="1"></gl-point-light>
     </gl-canvas>
     <br>
   `.define({...glElements})

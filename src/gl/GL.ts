@@ -1,8 +1,5 @@
 import * as THREE from 'three'
 
-const num = (str) => parseFloat(/\d+/.exec(str)?.[0] || '0')
-
-
 function GL() {
   let instance
   let renderer, camera, scene, updater

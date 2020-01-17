@@ -8,7 +8,7 @@ const GlMesh = {
   name: 'Mesh.001',
   position: [0, 0, 0],
   geometry: () => new THREE.BoxGeometry(1, 1, 1),
-  material: () => new THREE.MeshBasicMaterial({color: 0x9a9e9f}),
+  material: () => new THREE.MeshPhongMaterial({color: 0x9a9e9f}),
   mesh: ({gl, name, position, geometry, material}) => {
     var cube = new THREE.Mesh(geometry, material)
     cube.position.set(position[0], position[1], position[2])
