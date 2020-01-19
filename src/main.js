@@ -1,8 +1,10 @@
-if (process.env.NODE_ENV !== "production") module.hot.accept();
+// if (process.env.NODE_ENV !== "production") module.hot.accept();
+
 import style from './style/main.styl'
 
 import {html, define} from 'hybrids'
 import * as glElements from './gl'
+import HyAttr from './hy-attr'
 
 define("app-root", {
   render: () => html`
@@ -12,10 +14,17 @@ define("app-root", {
       <gl-mesh name="cube.02" position="${[0, 0, 0]}"></gl-mesh>
       <gl-mesh name="cube.03" position="${[0, -2, 0]}"></gl-mesh>
 
-      <gl-point-light position="${[2, 3, 2]}" intensity="3" distance="0" decay="1"></gl-point-light>
+      <gl-point-light position="${[2, 3, 2]}" intensity="1" distance="0" decay="1"></gl-point-light>
+      <gl-point-light position="${[-2, 3, 2]}" intensity="1" distance="0" decay="1"></gl-point-light>
     </gl-canvas>
+
+    <!-- <hy-attr
+      bool="true"
+      num="1"
+      str="foobar"
+      arr="${[1, 2, 3]}"></hy-attr> -->
     <br>
-  `.define({...glElements})
+  `.define({...glElements, HyAttr})
 });
 
 const globalStyle = document.createElement('style')

@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 
 function GL() {
-  let instance
+  let instance = null
+
   let renderer, camera, scene, updater
 
   function animate(dt, updater) {
@@ -16,17 +17,33 @@ function GL() {
     animate(null, updater)
   }
 
-  function init(host, {canvas}) {
-    renderer = new GL.prototype.Renderer(host, {canvas})
+  function Renderer(canvas) {
+    const renderer = new THREE.WebGLRenderer({canvas})
 
-    scene = new THREE.Scene()
-    scene.background = new THREE.Color(host.clearColor)
-
-    updater = new GL.prototype.Updater()
-
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false)
     window.addEventListener('resize', () => {
       renderer.setSize(canvas.clientWidth, canvas.clientHeight, false)
     })
+
+    return renderer
+  }
+
+  function Updater() {
+    let fns = []
+
+    return {
+      register: (fn) => fns.push(fn),
+      run: () => fns.forEach((fn) => fn()),
+    }
+  }
+
+  function init({canvas, clearColor}) {
+    renderer = Renderer(canvas)
+
+    scene = new THREE.Scene()
+    scene.background = new THREE.Color(clearColor)
+
+    updater = Updater()
 
     instance = {
       camera,
@@ -41,23 +58,7 @@ function GL() {
   }
 
   return {
-    getInstance: (host, {canvas}) => instance ? instance : init(host, {canvas}),
-  }
-}
-
-GL.prototype.Renderer = (host, {canvas}) => {
-  const renderer = new THREE.WebGLRenderer({canvas})
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight, false)
-
-  return renderer
-}
-
-GL.prototype.Updater = () => {
-  let fns = []
-
-  return {
-    register: (fn) => fns.push(fn),
-    run: () => fns.forEach((fn) => fn()),
+    getInstance: (host) => instance ? instance : init(host)
   }
 }
 

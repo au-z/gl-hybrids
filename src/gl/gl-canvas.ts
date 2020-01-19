@@ -15,14 +15,17 @@ function onWindowResize(onResize) {
   }
 }
 
+interface GlCanvas extends HTMLElement {[key: string]: any}
+
 const onAttach = ({gl}, e) => gl.onAttach(e.detail)
 
-const GlCanvas: Hybrids<HTMLElement> | any = {
+const GlCanvas: Hybrids<GlCanvas> = {
   width: '300px',
   height: '150px',
   clearColor: 0x000000,
   canvas: ({render}) => render().querySelector('canvas.gl-canvas'),
-  gl: (host) => GL.getInstance(host, {canvas: host.canvas}),
+  gl: GL.getInstance,
+
   render: ({width, height}) => html`
     <canvas class="gl-canvas" style="${{width, height}}"></canvas>
     <slot ongl-attach="${onAttach}"></slot>
