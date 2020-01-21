@@ -10,12 +10,17 @@ define("app-root", {
   render: () => html`
     <gl-canvas width="100vw" height="100vh" clear-color="0x353843">
       <gl-camera type="perspective" fov="75" near="0.1" far="1000" position="${[0, 0, 5]}"></gl-camera>
-      <gl-mesh name="cube.01" position="${[0, 2, 0]}"></gl-mesh>
-      <gl-mesh name="cube.02" position="${[0, 0, 0]}"></gl-mesh>
-      <gl-mesh name="cube.03" position="${[0, -2, 0]}"></gl-mesh>
-
+      <gl-point-light position="${[0, 0, 0]}" intensity="1" distance="0" decay="1"></gl-point-light>
       <gl-point-light position="${[2, 3, 2]}" intensity="1" distance="0" decay="1"></gl-point-light>
       <gl-point-light position="${[-2, 3, 2]}" intensity="1" distance="0" decay="1"></gl-point-light>
+
+      <gl-mesh name="cube.02" position="${[0, 0, 0]}">
+        <gl-geometry></gl-geometry>
+        <gl-material></gl-material>
+      </gl-mesh>
+
+      <gl-mesh name="cube.01" position="${[0, 2, 0]}"></gl-mesh>
+      <!-- <gl-mesh name="cube.03" position="${[0, -2, 0]}"></gl-mesh> -->
     </gl-canvas>
 
     <!-- <hy-attr

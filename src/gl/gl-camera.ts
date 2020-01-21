@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import {dispatch, html, Hybrids, property} from 'hybrids'
+import {mapToEnum} from '../util/Map'
 
 import useGL from './useGL'
 
@@ -8,8 +9,6 @@ enum CAMERATYPE {
 	isometric = 'ISOMETRIC',
 	iso = 'ISOMETRIC',
 }
-
-const mapToEnum = (enumeration, key) => enumeration[key?.toLowerCase()]
 
 function Camera({name, type, fov, aspect, near, far}) {
 	let camera
@@ -30,7 +29,7 @@ interface GlCamera extends HTMLElement {
 	[key: string]: any
 }
 
-const GlCamera: Hybrids<GlCamera> | any = {
+export default {
 	...useGL,
 	name: 'camera',
 	type: property(mapToEnum.bind(null, CAMERATYPE)),
@@ -52,6 +51,4 @@ const GlCamera: Hybrids<GlCamera> | any = {
 		return camera
 	},
 	render: ({camera}) => html`<meta data-name="${camera.name}"></meta>`,
-}
-
-export default GlCamera
+} as Hybrids<GlCamera>
