@@ -8,7 +8,7 @@ const Helper = (value) => ({
 	get: (host) => !value ? null : new THREE.PointLightHelper(host.light, 0.5)
 })
 
-const GlPointLight = {
+export default {
 	...useGL,
 	name: 'Point.001',
 	position: [0, 0, 0],
