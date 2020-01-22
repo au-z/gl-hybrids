@@ -6,6 +6,6 @@ interface GlMaterial extends HTMLElement {
 }
 
 export default {
-  material: (host) => new THREE.MeshPhongMaterial({color: 0x222222}),
+  material: () => new THREE.MeshPhongMaterial({color: 0x222222}),
   render: ({material}) => html`<div>${JSON.stringify(material)}</div>`
 } as Hybrids<GlMaterial>

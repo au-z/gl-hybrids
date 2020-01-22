@@ -1,6 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const CopyWebpackPlugin = require("copy-webpack-plugin")
+const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 const load = (test, ...loaders) => ({
   test, use: loaders, exclude: [/node_modules/],
@@ -13,7 +13,8 @@ module.exports = function(env, argv) {
 
     entry: path.resolve(__dirname, '../src/main.js'),
     output: {
-      path: path.resolve(__dirname, 'output/'),
+      path: path.resolve(__dirname, 'output'),
+      publicPath: '/',
       filename: 'hybrids.js',
       library: 'Hybrids',
       libraryTarget: 'umd',
@@ -28,6 +29,10 @@ module.exports = function(env, argv) {
 
     resolve: {
       extensions: ['.ts', '.js', '.json', '.styl'],
+      alias: {
+        'src': path.resolve(__dirname, '../src'),
+        'style': path.resolve(__dirname, '../src/style'),
+      },
     },
 
     plugins: [
@@ -35,15 +40,24 @@ module.exports = function(env, argv) {
         template: path.resolve(__dirname, './template.html'),
         inject: 'head',
       }),
+      new CopyWebpackPlugin([
+        {from: path.resolve(__dirname, '../static'), to: 'static'},
+      ], {logLevel: 'debug'}),
     ],
 
     devServer: {
-      contentBase: path.resolve(__dirname, 'output/'),
-      port: 11000,
+      contentBase: path.resolve(__dirname, 'output'),
       compress: true,
-      open: true,
-      hot: true,
       historyApiFallback: true,
-    }
+      hot: true,
+      noInfo: true,
+      open: true,
+      port: 11000,
+      serveIndex: true,
+    },
+
+    // performance: {
+    //   hints: 'warning',
+    // },
   }
 }

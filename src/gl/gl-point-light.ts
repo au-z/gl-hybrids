@@ -3,9 +3,7 @@ import {html, Hybrids} from 'hybrids'
 
 import useGL from './useGL'
 
-interface GlPointLight extends HTMLElement {
-	[key: string]: any
-}
+interface GlPointLight extends HTMLElement {[key: string]: any}
 
 export default {
 	...useGL,

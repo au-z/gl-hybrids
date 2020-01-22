@@ -1,0 +1,33 @@
+@require '~style/mixins.styl'
+
+*, *:before, *:after {
+  box-sizing: border-box
+}
+
+.gl-record {
+  absPos(0, auto, auto, 0)
+  flexXY(start, center)
+  z-index: 1
+
+  & > div {
+    wh(1rem)
+    cursor: pointer
+    margin: 8px
+  }
+}
+
+$color-record = #d83432
+
+.gl-record > .record {
+  circle(1rem)
+  background: $color-record
+  &.active {
+    background: lighten($color-record, 15%)
+    box-shadow: 0 0 0.6rem lighten($color-record, 10%)
+  }
+}
+
+.gl-record > .stop {
+  border-radius: 3px
+  background: #242728
+}

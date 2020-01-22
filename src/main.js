@@ -4,32 +4,20 @@ import style from './style/main.styl'
 
 import {html, define} from 'hybrids'
 import * as glElements from './gl'
-import HyAttr from './hy-attr'
 
 define("app-root", {
   render: () => html`
-    <gl-canvas width="100vw" height="100vh" clear-color="0x353843">
-      <gl-camera type="perspective" fov="75" near="0.1" far="1000" position="${[0, 0, 5]}"></gl-camera>
-      <gl-point-light position="${[0, 0, 0]}" intensity="1" distance="0" decay="1"></gl-point-light>
-      <gl-point-light position="${[2, 3, 2]}" intensity="1" distance="0" decay="1"></gl-point-light>
-      <gl-point-light position="${[-2, 3, 2]}" intensity="1" distance="0" decay="1"></gl-point-light>
+    <gl-canvas id="gl-canvas" width="100vw" height="100vh" clear-color="0x353843">
+      <gl-record></gl-record>
+      <gl-camera type="perspective" fov="75" near="0.1" far="1000" position="${[0, 0, 3]}"></gl-camera>
+      <gl-point-light position="${[0.5, 0, -2]}" intensity="20" distance="0" decay="1"></gl-point-light>
+      <gl-point-light position="${[2, 3, 2]}" intensity="3" distance="0" decay="1"></gl-point-light>
+      <gl-point-light position="${[-2, 3, 2]}" intensity="10" distance="0" decay="1"></gl-point-light>
 
-      <gl-mesh name="cube.02" position="${[0, 0, 0]}">
-        <gl-geometry></gl-geometry>
-        <gl-material></gl-material>
-      </gl-mesh>
-
-      <gl-mesh name="cube.01" position="${[0, 2, 0]}"></gl-mesh>
-      <!-- <gl-mesh name="cube.03" position="${[0, -2, 0]}"></gl-mesh> -->
+      <gl-model type="gltf" src="/static/models/scifi-helmet/SciFiHelmet.gltf"></gl-model>
+      <!-- <gl-model type="gltf" src="/static/models/flight-helmet/FlightHelmet.gltf"></gl-model> -->
     </gl-canvas>
-
-    <!-- <hy-attr
-      bool="true"
-      num="1"
-      str="foobar"
-      arr="${[1, 2, 3]}"></hy-attr> -->
-    <br>
-  `.define({...glElements, HyAttr})
+  `.define({...glElements})
 });
 
 const globalStyle = document.createElement('style')

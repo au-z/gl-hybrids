@@ -6,20 +6,18 @@ import {Hybrids, html} from 'hybrids'
  * @param onResize callback function (host, event) => {...}
  * @return factory {connect} hybrid descriptor
  */
-function onWindowResize(onResize) {
-  return {
-    connect: (host) => {
-      window.addEventListener('resize', (e) => onResize(host, e))
-      return () => window.removeEventListener('resize', (e) => onResize(host, e))
-    },
-  }
-}
-
-interface GlCanvas extends HTMLElement {[key: string]: any}
+const onWindowResize = (onResize) => ({
+  connect: (host) => {
+    window.addEventListener('resize', (e) => onResize(host, e))
+    return () => window.removeEventListener('resize', (e) => onResize(host, e))
+  },
+})
 
 const onAttach = ({gl}, e) => gl.onAttach(e.detail)
 
-const GlCanvas: Hybrids<GlCanvas> = {
+interface GlCanvas extends HTMLElement {[key: string]: any}
+
+export default {
   width: '300px',
   height: '150px',
   clearColor: 0x000000,
@@ -30,6 +28,4 @@ const GlCanvas: Hybrids<GlCanvas> = {
     <canvas class="gl-canvas" style="${{width, height}}"></canvas>
     <slot ongl-attach="${onAttach}"></slot>
   `,
-}
-
-export default GlCanvas
+} as Hybrids<GlCanvas>

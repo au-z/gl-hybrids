@@ -1,3 +1,4 @@
+import {WEBGL} from 'three/examples/jsm/WebGL.js'
 import * as THREE from 'three'
 
 function GL() {
@@ -18,7 +19,8 @@ function GL() {
   }
 
   function Renderer(canvas) {
-    const renderer = new THREE.WebGLRenderer({canvas})
+    const context = canvas.getContext('webgl2', {alpha: false})
+    const renderer = new THREE.WebGLRenderer({canvas, context})
 
     renderer.setSize(canvas.clientWidth, canvas.clientHeight, false)
     window.addEventListener('resize', () => {
@@ -38,6 +40,10 @@ function GL() {
   }
 
   function init({canvas, clearColor}) {
+    if(!WEBGL.isWebGL2Available()) {
+      document.body.appendChild(WEBGL.getWebGLErrorMessage())
+    }
+
     renderer = Renderer(canvas)
 
     scene = new THREE.Scene()
