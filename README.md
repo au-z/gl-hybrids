@@ -18,8 +18,9 @@ html`
 ![](https://i.imgur.com/bzsTHtr.gif)
 
 ## Dependencies
-- **WebGL2** browser
-- **hybridsjs/hybrids** ^4.1.1
+- **Web Component** [supported browser](https://www.webcomponents.org/)
+- **WebGL** [supported browser](https://caniuse.com/#feat=webgl)
+- **hybridsjs/hybrids** [^4.1.1](https://github.com/hybridsjs/hybrids)
 
 ---
 
