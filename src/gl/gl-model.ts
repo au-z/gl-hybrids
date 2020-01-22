@@ -9,13 +9,14 @@ enum MODEL_TYPE {
 
 const onError = (err) => console.error(err)
 
-const loadModel = ({gl, loader, src}) => {
+const loadModel = ({gl, loader, src, position}) => {
   return new Promise((res, rej) => loader.load(src, (gltf) => {
+    gl.scene.position.set(position[0], position[1], position[2])
     gl.scene.add(gltf.scene)
 
     console.log('Scene', gltf.scene)
     gl.onUpdate(() => {
-      gltf.scene.rotation.y += 0.004
+      gltf.scene.rotation.y += 0.008
     })
 
     return res(gltf)

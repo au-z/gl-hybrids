@@ -51,6 +51,7 @@ function Recorder({canvas}) {
       console.log('recorder stopped', e)
       const blob = new Blob(recordedChunks, {type: 'video/webm'})
       const url = URL.createObjectURL(blob)
+
       downloadRecording(url)
     }
     mediaRecorder.ondataavailable = (e) => {
