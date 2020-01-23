@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import {html, Hybrids, children} from 'hybrids'
 
-import useGL from './useGL'
+import gl from './gl-context.base'
 import GlGeometry from './gl-geometry'
 import GlMaterial from './gl-material'
 
@@ -22,14 +22,14 @@ function childOrDefault(property: string, hybrids: Hybrids<HTMLElement>, default
 interface GlMesh extends HTMLElement {[key: string]: any}
 
 export default {
-  ...useGL,
+  ...gl,
   name: 'Mesh.001',
   position: [0, 0, 0],
   ...childOrDefault('geometry', GlGeometry, new THREE.BoxGeometry(1, 1, 1)),
   ...childOrDefault('material', GlMaterial, new THREE.MeshBasicMaterial({color: 0x999999})),
   mesh: ({gl, name, position, geometry, material}) => {
     const mesh = new THREE.Mesh(geometry, material)
-    mesh.position.set(position[0], position[1], position[2])
+    mesh.position.fromArray(position)
     mesh.name = name
     gl.scene.add(mesh)
 

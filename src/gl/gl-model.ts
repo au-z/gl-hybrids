@@ -1,37 +1,39 @@
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
-import { Hybrids, property, Descriptor, html } from "hybrids"
+import { Hybrids, property, html } from "hybrids"
 import { mapToEnum } from "../util/Map"
-import useGL from "./useGL"
+import {default as gl} from "./gl-context.base"
+import GlAssetFactory from './GlAsset.factory'
+import * as THREE from 'three'
+import { Vector3 } from 'three'
 
 enum MODEL_TYPE {
-  gltf = 'gltf'
+  gltf = 'GLTF'
 }
 
 const onError = (err) => console.error(err)
 
-const loadModel = ({gl, loader, src, position}) => {
-  return new Promise((res, rej) => loader.load(src, (gltf) => {
-    gl.scene.position.set(position[0], position[1], position[2])
-    gl.scene.add(gltf.scene)
+const loadModel = ({gl, loader, src, position}) => new Promise((res, rej) =>
+  loader.load(src, (gltf) => {
+    gltf.scene.position.fromArray(position)
 
-    console.log('Scene', gltf.scene)
     gl.onUpdate(() => {
       gltf.scene.rotation.y += 0.008
     })
 
-    return res(gltf)
-  }, null, onError))
-}
+    console.log('Scene', gltf.scene)
+    return res(gltf.scene)
+  }, null, onError)
+)
 
 interface GlModel extends HTMLElement {[key: string]: any | object}
 
 export default {
-  ...useGL,
-  name: ({src}) => src.split('/')?.slice(-1)[0],
+  ...gl,
   position: [0, 0, 0],
   type: property(mapToEnum.bind(null, MODEL_TYPE, MODEL_TYPE.gltf)),
   src: '',
+  name: ({src}) => src.split('/')?.slice(-1)[0],
   loader: () => new GLTFLoader(),
-  model: loadModel,
+  model: GlAssetFactory({get: loadModel as any}),
   render: ({model, name}) => html`<meta data-name="${name}">${JSON.stringify(model)}</meta>`
 } as unknown as Hybrids<GlModel>

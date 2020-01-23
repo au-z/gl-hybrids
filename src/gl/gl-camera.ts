@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import {dispatch, html, Hybrids, property} from 'hybrids'
 import {mapToEnum} from '../util/Map'
 
-import useGL from './useGL'
+import gl from './gl-context.base'
 
 enum CAMERATYPE {
 	perspective = 'PERSPECTIVE',
@@ -21,7 +21,6 @@ function Camera({name, type, fov, aspect, near, far}) {
 	}
 
 	camera.name = name
-
 	return camera
 }
 
@@ -30,7 +29,7 @@ interface GlCamera extends HTMLElement {
 }
 
 export default {
-	...useGL,
+	...gl,
 	name: 'camera',
 	type: property(mapToEnum.bind(null, CAMERATYPE)),
 	fov: 75,
@@ -40,7 +39,7 @@ export default {
   aspect: ({gl}) => gl.canvas.clientWidth / gl.canvas.clientHeight,
 	camera: (host) => {
 		const camera = Camera(host as any)
-		camera.position.set(...host.position)
+		camera.position.fromArray(host.position)
 		dispatch(host, 'gl-attach', {detail: {name: 'camera', asset: camera}, bubbles: true})
 
 		window.addEventListener('resize', () => {

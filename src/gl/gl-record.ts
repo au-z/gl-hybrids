@@ -1,6 +1,6 @@
 import style from './gl-record.styl'
 import { Hybrids, html } from 'hybrids'
-import useGL from './useGL'
+import gl from './gl-context.base'
 
 function Recorder({canvas}) {
   const mediaSource = new MediaSource()
@@ -90,7 +90,7 @@ function Recorder({canvas}) {
 interface GlRecord extends HTMLElement {[key: string]: any}
 
 export default {
-  ...useGL,
+  ...gl,
   active: false,
   recorder: Recorder,
   render: ({recorder, active}) => html`
