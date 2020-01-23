@@ -19,7 +19,9 @@ function childOrDefault(property: string, hybrids: Hybrids<HTMLElement>, default
   }
 }
 
-interface GlMesh extends HTMLElement {[key: string]: any}
+interface GlMesh extends HTMLElement {
+  [key: string]: any
+}
 
 export default {
   ...gl,

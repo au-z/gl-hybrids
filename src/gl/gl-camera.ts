@@ -49,5 +49,9 @@ export default {
 
 		return camera
 	},
-	render: ({camera}) => html`<meta data-name="${camera.name}"></meta>`,
+	render: ({camera}) => html`
+		<div>
+			<slot></slot>
+			<meta data-name="${camera.name}"></meta>
+		</div>`,
 } as Hybrids<GlCamera>

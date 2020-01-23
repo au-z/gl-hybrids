@@ -9,7 +9,9 @@ enum PRIMITIVE {
   cone = 'CONE',
 }
 
-interface GlGeometry extends HTMLElement {[key: string]: any}
+interface GlGeometry extends HTMLElement {
+  [key: string]: any
+}
 
 export default {
   primitive: property(mapToEnum.bind(null, PRIMITIVE, PRIMITIVE.box)),

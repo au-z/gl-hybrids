@@ -15,7 +15,9 @@ const onWindowResize = (onResize) => ({
 
 const onAttach = ({gl}, e) => gl.onAttach(e.detail)
 
-interface GlCanvas extends HTMLElement {[key: string]: any}
+interface GlCanvas extends HTMLElement {
+  [key: string]: any
+}
 
 export default {
   width: '300px',

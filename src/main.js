@@ -9,7 +9,9 @@ define("app-root", {
   render: () => html`
     <gl-canvas id="gl-canvas" width="100vw" height="100vh" clear-color="0x35383a">
       <gl-record></gl-record>
-      <gl-camera type="perspective" fov="75" near="0.1" far="1000" position="${[0, 0, 6]}"></gl-camera>
+      <gl-camera type="perspective" fov="75" near="0.1" far="1000" position="${[0, 0, 6]}">
+        <gl-orbit-control></gl-orbit-control>
+      </gl-camera>
       <gl-point-light position="${[0.5, 0, -2]}" intensity="10" distance="0" decay="1" helper></gl-point-light>
       <gl-point-light position="${[2, 3, 2]}" intensity="3" distance="0" decay="1" helper></gl-point-light>
       <gl-point-light position="${[-2, 3, 2]}" intensity="4" distance="0" decay="1" helper></gl-point-light>

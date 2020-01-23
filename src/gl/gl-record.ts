@@ -6,7 +6,6 @@ function Recorder({canvas}) {
   const mediaSource = new MediaSource()
   mediaSource.addEventListener('sourceopen', (e) => {
     sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"')
-    console.log('Source buffer: ', sourceBuffer)
   }, false)
   let mediaRecorder
   let recordedChunks
@@ -48,7 +47,6 @@ function Recorder({canvas}) {
     mediaRecorder = tryCreateRecorder(stream)
 
     mediaRecorder.onstop = (e) => {
-      console.log('recorder stopped', e)
       const blob = new Blob(recordedChunks, {type: 'video/webm'})
       const url = URL.createObjectURL(blob)
 
@@ -65,7 +63,6 @@ function Recorder({canvas}) {
   function stop(host, e) {
     host.active = false
     mediaRecorder.stop()
-    console.log(recordedChunks)
   }
 
   function downloadRecording(url, filename = 'video-001') {
@@ -87,7 +84,9 @@ function Recorder({canvas}) {
   }
 }
 
-interface GlRecord extends HTMLElement {[key: string]: any}
+interface GlRecord extends HTMLElement {
+  [key: string]: any
+}
 
 export default {
   ...gl,

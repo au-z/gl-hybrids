@@ -1,5 +1,6 @@
 import GlCanvas from './gl-canvas'
 import GlCamera from './gl-camera'
+	import GlOrbitControl from './gl-orbit-control'
 import GlRecord from './gl-record'
 
 import GlModel from './gl-model'
@@ -13,6 +14,7 @@ import GlPointLight from './gl-point-light'
 export {
 	GlCanvas,
 	GlCamera,
+	GlOrbitControl,
 	GlRecord,
 	GlModel,
 	GlMesh,

@@ -3,8 +3,6 @@ import { Hybrids, property, html } from "hybrids"
 import { mapToEnum } from "../util/Map"
 import {default as gl} from "./gl-context.base"
 import GlAssetFactory from './GlAsset.factory'
-import * as THREE from 'three'
-import { Vector3 } from 'three'
 
 enum MODEL_TYPE {
   gltf = 'GLTF'
@@ -25,7 +23,9 @@ const loadModel = ({gl, loader, src, position}) => new Promise((res, rej) =>
   }, null, onError)
 )
 
-interface GlModel extends HTMLElement {[key: string]: any | object}
+interface GlModel extends HTMLElement {
+  [key: string]: any
+}
 
 export default {
   ...gl,
