@@ -1,4 +1,4 @@
-import { property, Hybrids, html, HybridElement } from 'hybrids'
+import { property, Hybrids, html } from 'hybrids'
 import * as THREE from 'three'
 import { mapToEnum } from '../util/Map'
 
@@ -15,6 +15,6 @@ interface GlGeometry extends HTMLElement {
 
 export default {
   primitive: property(mapToEnum.bind(null, PRIMITIVE, PRIMITIVE.box)),
-  geometry: () => new THREE.TorusGeometry(0.5, 0.2, 16, 16),
+  geometry: () => new THREE.TorusGeometry(0.5, 0.2, 32, 32),
   render: ({geometry}) => html`<div>${JSON.stringify(geometry)}</div>`
 } as Hybrids<GlGeometry>

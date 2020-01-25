@@ -16,11 +16,10 @@ export default {
 	distance: 0,
 	decay: 1,
 	light: GlAssetFactory({
-		get: ({gl, name, position, color, intensity, distance, decay, helper}) => {
+		get: ({name, position, color, intensity, distance, decay, helper}) => {
 			const light = new THREE.PointLight(color, intensity, distance, decay)
 			light.position.fromArray(position)
 			light.name = name
-			light.visible = true
 
 			return light
 		},
@@ -28,7 +27,6 @@ export default {
 	helper: property(false),
 	lightHelper: GlAssetFactory({
 		get: (host, value) => {
-			console.log(host.helper)
 			if(host.helper) {
 				return new THREE.PointLightHelper(host.light, 0.33)
 			}

@@ -10,6 +10,7 @@ export default {
 	parent: parent(GlCamera),
 	camera: ({parent: {camera}}) => camera,
 	renderer: ({parent: {gl: {renderer}}}) => renderer,
+
 	controls: ({camera, renderer}) => new OrbitControls(camera, renderer.domElement),
-	render: ({controls}) => html`<div>${JSON.stringify(controls)}</div>`
+	render: ({controls}) => html`<meta data-uuid="${controls.object.uuid}"></meta>`
 } as Hybrids<GlOrbitControl>
