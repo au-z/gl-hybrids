@@ -1,24 +1,24 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "declaration": true,
-    "baseUrl": ".",
-    "esModuleInterop": true,
-    "noImplicitAny": false,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "paths": {
-      "src/*": ["src/*"],
-    },
-  },
-  "include": [
-    "src/**/*.ts", "src/gl-context.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ]
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"declaration": true,
+		"baseUrl": ".",
+		"esModuleInterop": true,
+		"noImplicitAny": false,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"paths": {
+			"src/*": ["src/*"],
+		},
+	},
+	"include": [
+		"src/**/*.ts", "src/gl-context.js"
+	],
+	"exclude": [
+		"node_modules",
+		"**/*.spec.ts"
+	]
 }

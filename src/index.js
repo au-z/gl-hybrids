@@ -4,5 +4,5 @@ import * as hybrids from './gl'
 define({...hybrids})
 
 export {
-  hybrids,
+	hybrids,
 }

@@ -1,8 +1,9 @@
 import * as THREE from 'three'
-import {dispatch, html, Hybrids, property} from 'hybrids'
+import {Hybrids, property} from 'hybrids'
 import {mapToEnum} from '../util/Map'
 
 import gl from './gl-context.base'
+import { GlObject3DMixin } from './gl-object'
 
 enum CAMERATYPE {
 	perspective = 'PERSPECTIVE',
@@ -10,7 +11,7 @@ enum CAMERATYPE {
 	iso = 'ISOMETRIC',
 }
 
-function Camera({name, type, fov, aspect, near, far}) {
+function Camera({type, fov, aspect, near, far}: GlCamera) {
 	let camera
 	switch(type) {
 		case CAMERATYPE.isometric:
@@ -19,8 +20,7 @@ function Camera({name, type, fov, aspect, near, far}) {
 		default:
 			camera = new THREE.PerspectiveCamera(fov, aspect, near, far); break;
 	}
-
-	camera.name = name
+	console.log('Camera uuid: ', camera.uuid)
 	return camera
 }
 
@@ -30,28 +30,21 @@ interface GlCamera extends HTMLElement {
 
 export default {
 	...gl,
-	name: 'camera',
+	...GlObject3DMixin(({camera}) => camera),
 	type: property(mapToEnum.bind(null, CAMERATYPE)),
 	fov: 75,
 	near: 0.1,
 	far: 1000,
-	position: [0, 0, 0],
-  aspect: ({gl}) => gl.canvas.clientWidth / gl.canvas.clientHeight,
-	camera: (host) => {
-		const camera = Camera(host as any)
-		camera.position.fromArray(host.position)
-		dispatch(host, 'gl-attach', {detail: {name: 'camera', asset: camera}, bubbles: true})
+	camera: ({canvas, gl, fov, near, far}) => {
+		const aspect = canvas.clientWidth / canvas.clientHeight
+		const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+		gl.onAttach({name: 'camera', asset: camera})
 
 		window.addEventListener('resize', () => {
-			camera.aspect = host.canvas.clientWidth / host.canvas.clientHeight
+			camera.aspect = canvas.clientWidth / canvas.clientHeight
 			camera.updateProjectionMatrix()
 		})
 
 		return camera
 	},
-	render: ({camera}) => html`
-		<div>
-			<slot></slot>
-			<meta data-name="${camera.name}"></meta>
-		</div>`,
 } as Hybrids<GlCamera>

@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import {html, Hybrids, property} from 'hybrids'
 import {default as gl} from './gl-context.base'
 import GlAssetFactory from './GlAsset.factory'
+import { GlObject3DMixin } from './gl-object'
 
 interface GlPointLight extends HTMLElement {
 	[key: string]: any
@@ -9,28 +10,20 @@ interface GlPointLight extends HTMLElement {
 
 export default {
 	...gl,
-	name: 'Point.001',
-	position: [0, 0, 0],
+	...GlObject3DMixin(({light}) => light),
 	color: 0xffffff,
 	intensity: 1,
 	distance: 0,
 	decay: 1,
 	light: GlAssetFactory({
-		get: ({name, position, color, intensity, distance, decay, helper}) => {
-			const light = new THREE.PointLight(color, intensity, distance, decay)
-			light.position.fromArray(position)
-			light.name = name
-
-			return light
-		},
+		get: ({color, intensity, distance, decay}) => new THREE.PointLight(color, intensity, distance, decay),
 	}),
 	helper: property(false),
 	lightHelper: GlAssetFactory({
-		get: (host, value) => {
-			if(host.helper) {
-				return new THREE.PointLightHelper(host.light, 0.33)
+		get: ({helper, light}, value) => {
+			if(helper) {
+				return new THREE.PointLightHelper(light, 0.33)
 			}
 		},
 	}),
-	render: ({light, helper}) => html`<meta data-name="${light.name}"></meta>`
 } as Hybrids<GlPointLight>

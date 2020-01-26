@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import {html, Hybrids, children} from 'hybrids'
+import {Hybrids, children} from 'hybrids'
 
 import gl from './gl-context.base'
 import GlAssetFactory from './GlAsset.factory'
@@ -28,7 +28,7 @@ interface GlMesh extends GlObject3D {
 
 export default {
   ...gl,
-  ...GlObject3DMixin(({mesh}) => mesh as any),
+  ...GlObject3DMixin(({mesh}) => mesh),
   ...childOrDefault('geometry', GlGeometry, new THREE.BoxGeometry(1, 1, 1)),
   ...childOrDefault('material', GlMaterial, new THREE.MeshBasicMaterial({color: 0x999999})),
   mesh: GlAssetFactory({

@@ -1,8 +1,8 @@
 import * as THREE from 'three'
-import { Hybrids, property, html } from 'hybrids'
+import { Hybrids} from 'hybrids'
 import gl from './gl-context.base'
 import GlAssetFactory from './GlAsset.factory'
-
+import { GlObject3DMixin } from './gl-object'
 
 // TODO
 function findInScene({id, property}): any {
@@ -26,21 +26,15 @@ interface GlDirectionalLight extends HTMLElement {
 
 export default {
 	...gl,
-	name: 'Directional.001',
-	position: [0, 1, 0],
+	...GlObject3DMixin(({light}) => light),
 	color: 0xffffff,
 	intensity: 1,
 	helper: false,
 	// target: findInScene({id: 'camera', property: 'camera'}),
 	light: GlAssetFactory({
-		get: ({name, position, target, color, intensity}) => {
+		get: ({target, color, intensity}) => {
 			const light = new THREE.DirectionalLight(color, intensity)
-			light.name = name
-			light.position.fromArray(position)
-			if(target) {
-				console.log(target)
-			}
-
+			if(target) light.target = target
 			return light
 		}
 	}),
@@ -51,5 +45,4 @@ export default {
 			}
 		},
 	}),
-	render: ({light, target}) => html`<meta data-name="${light.name}">${JSON.stringify(target)}</meta>`
 } as Hybrids<GlDirectionalLight>

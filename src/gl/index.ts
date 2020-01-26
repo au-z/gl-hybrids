@@ -2,6 +2,7 @@ import GlObject from './gl-object'
 
 import GlCanvas from './gl-canvas'
 import GlCamera from './gl-camera'
+	import GlCameraTools from './gl-camera-tools'
 	import GlOrbitControl from './gl-orbit-control'
 import GlRecord from './gl-record'
 
@@ -18,6 +19,7 @@ export {
 	GlObject,
 	GlCanvas,
 	GlCamera,
+	GlCameraTools,
 	GlOrbitControl,
 	GlRecord,
 	GlModel,

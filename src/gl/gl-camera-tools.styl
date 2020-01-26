@@ -1,0 +1,78 @@
+@require '~style/mixins.styl'
+
+*, *:before, *:after {
+  box-sizing: border-box
+}
+
+ul {
+	margin: 0
+	padding: 0
+	li {
+		list-style: none
+	}
+}
+
+.gl-camera-tools {
+	absPos(0, 0, 0, 0)
+	flexXY(center, center)
+
+	font-family: 'Consolas', monospace
+	font-size: 0.8rem
+	color: #aaa
+	pointer-events: none !important
+
+	.frustum {
+		position: relative
+		wh(100%)
+		border: 32px solid  rgba(0, 0, 0, 0.1)
+
+		padding: 4px 32px
+
+		.corner {
+			position: absolute
+			wh(max(24px, 10%))
+			$corner-border = 2px solid rgba(255, 255, 255, 0.3)
+
+			&.top-left {
+				absPos(0, auto, auto, 0)
+				border-left: $corner-border
+				border-top: $corner-border
+			}
+
+			&.top-right {
+				absPos(0, 0, auto, auto)
+				border-right: $corner-border
+				border-top: $corner-border
+			}
+
+			&.bottom-left {
+				absPos(auto, auto, 0, 0)
+				border-left: $corner-border
+				border-bottom: $corner-border
+			}
+
+			&.bottom-right {
+				absPos(auto, 0, 0, auto)
+				border-right: $corner-border
+				border-bottom: $corner-border
+			}
+		}
+	}
+}
+
+.frustum > .info-bar {
+	ul {
+		flexXY(start, center)
+		li {
+			padding: 0 8px
+			border-right: 1px solid #ddd
+			&:first-child {
+				color: #ddd
+			}
+			&:last-child {
+				padding-right: 0
+				border: 0
+			}
+		}
+	}
+}

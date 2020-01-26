@@ -1,8 +1,8 @@
 import { Hybrids, property } from 'hybrids'
-import * as THREE from 'three'
 import gl from './gl-context.base'
 import GlAssetFactory from './GlAsset.factory'
 import {proxy, Translate} from 'src/util/Proxy'
+import { Object3D, BoxHelper, Color } from 'three'
 
 interface GlObject3D extends HTMLElement {
   castShadow: boolean
@@ -15,25 +15,25 @@ interface GlObject3D extends HTMLElement {
   [key: string]: any
 }
 
-interface PropertySelectorFn {
-  (host: GlObject3D): THREE.Object3D
+interface PropertySelectorFn<T> {
+  (host: GlObject3D): T
 }
 
-function GlObject3DMixin(getProperty: PropertySelectorFn): Hybrids<GlObject3D> {
+function GlObject3DMixin(getProperty: PropertySelectorFn<Object3D>): Hybrids<GlObject3D> {
   return {
-    castShadow: proxy((host) => getProperty(host), 'castShadow'),
-    id: proxy((host) => getProperty(host), 'id'),
-    name: proxy((host) => getProperty(host), 'name'),
-    position: proxy((host) => getProperty(host), 'position', ...Translate.vec3),
-    rotation: proxy((host) => getProperty(host), 'rotation', ...Translate.euler),
-    scale: proxy((host) => getProperty(host), 'scale', ...Translate.vec3),
-    visible: proxy((host) => getProperty(host), 'visible'),
+    castShadow: proxy(getProperty, 'castShadow'),
+    id: proxy(getProperty, 'id'),
+    name: proxy(getProperty, 'name'),
+    position: proxy(getProperty, 'position', ...Translate.vec3),
+    rotation: proxy(getProperty, 'rotation', ...Translate.euler),
+    scale: proxy(getProperty, 'scale', ...Translate.vec3),
+    visible: proxy(getProperty, 'visible'),
     bbox: property(false),
     boxHelper: {
       ...GlAssetFactory({
         get: (host, value) => {
           const object = getProperty(host as any)
-          if(host.bbox) return new THREE.BoxHelper(object, new THREE.Color(0xffffff))
+          if(host.bbox) return new BoxHelper(object, new Color(0xffffff))
         }
       }),
       observe: (host, value) => {
@@ -46,7 +46,7 @@ function GlObject3DMixin(getProperty: PropertySelectorFn): Hybrids<GlObject3D> {
 export default (function() {
   return {
     ...gl,
-    obj: GlAssetFactory({get: () => new THREE.Object3D()}),
+    obj: GlAssetFactory({get: () => new Object3D()}),
     ...GlObject3DMixin(({obj}) => obj),
   } as Hybrids<GlObject3D>
 })()
