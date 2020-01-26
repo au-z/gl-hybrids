@@ -32,21 +32,22 @@ function proxy<E extends HTMLElement>(
 ): Descriptor<E> {
   let property = null
   return {
-    get: (host) => get ? get(property[sub]) : property[sub],
-    set: (host, value) => set ? set(property[sub], value) : ((_value) => {
-      console.log(property[sub], _value)
-      property[sub] = _value
-      return property[sub]
-    })(value),
+    get: (host) => {
+      const property = getProperty(host)
+      return property ? (get ? get(property[sub]) : property) : null
+    },
+    set: (host, value) => {
+      const property = getProperty(host)
+      return set ? set(property[sub], value) : ((_value) => {
+        console.log(property[sub], _value)
+        property[sub] = _value
+        return property[sub]
+      })(value)
+    },
     connect: (host) => {
       property = getProperty(host)
       return () => {}
     },
-    /** TODO: Introduce debugging support instrumentation */
-
-    // observe: (host, value, lastValue) => {
-    //   console.log(lastValue, value)
-    // },
   }
 }
 

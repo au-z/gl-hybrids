@@ -29,24 +29,24 @@ function GlObject3DMixin(getProperty: PropertySelectorFn): Hybrids<GlObject3D> {
     scale: proxy((host) => getProperty(host), 'scale', ...Translate.vec3),
     visible: proxy((host) => getProperty(host), 'visible'),
     bbox: property(false),
-    boxHelper: GlAssetFactory({
-      get: (host, value) => {
-        const object = getProperty(host as any)
-        if(host.bbox) return new THREE.BoxHelper(object, new THREE.Color(0xffffff))
-      }
-    }),
+    boxHelper: {
+      ...GlAssetFactory({
+        get: (host, value) => {
+          const object = getProperty(host as any)
+          if(host.bbox) return new THREE.BoxHelper(object, new THREE.Color(0xffffff))
+        }
+      }),
+      observe: (host, value) => {
+        value?.isObject3D && getProperty(host)?.attach(value)
+      },
+    }
   }
 }
 
 export default (function() {
   return {
     ...gl,
-    obj: GlAssetFactory({
-      get: () => new THREE.Object3D()
-    }),
-    bbox: GlAssetFactory({
-      get: ({obj}) => new THREE.BoxHelper(obj, new THREE.Color(0xffffff))
-    }),
+    obj: GlAssetFactory({get: () => new THREE.Object3D()}),
     ...GlObject3DMixin(({obj}) => obj),
   } as Hybrids<GlObject3D>
 })()

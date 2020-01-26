@@ -3,6 +3,8 @@ import { Hybrids, property, html } from 'hybrids'
 import gl from './gl-context.base'
 import GlAssetFactory from './GlAsset.factory'
 
+
+// TODO
 function findInScene({id, property}): any {
 	return {
 		get: ({parent, gl}, value) => {
@@ -29,7 +31,7 @@ export default {
 	color: 0xffffff,
 	intensity: 1,
 	helper: false,
-	target: findInScene({id: 'camera', property: 'camera'}),
+	// target: findInScene({id: 'camera', property: 'camera'}),
 	light: GlAssetFactory({
 		get: ({name, position, target, color, intensity}) => {
 			const light = new THREE.DirectionalLight(color, intensity)
