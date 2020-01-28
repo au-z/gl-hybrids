@@ -1,4 +1,3 @@
-import GL from './GL'
 import {Hybrids, html, property} from 'hybrids'
 import {WebGLRenderer, Scene, Color} from 'three'
 

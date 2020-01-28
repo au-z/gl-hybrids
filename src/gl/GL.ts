@@ -73,3 +73,12 @@ function GL() {
 }
 
 export default GL()
+
+function Renderer({canvas, clearColor}) {
+  const context = canvas.getContext('webgl2', {alpha: false})
+}
+
+export {
+  Renderer,
+  Scene,
+}
