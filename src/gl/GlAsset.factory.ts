@@ -7,11 +7,18 @@ export default function GlAssetFactory<H extends GlContext>({get, set, connect, 
 		set,
 		connect: (host, value, invalidate) => {
 			connect && connect(host, value, invalidate)
-			return (host, value) => host?.gl.scene.remove(value)
+			return (host, value) => host?.scene.remove(value)
 		},
 		observe: (host, value, last) => {
 			observe && observe(host, value, last)
-			value?.isObject3D && host.gl.scene.add(value)
+			value?.isObject3D && host.scene.add(value)
+			// keep an immutable outline of items in the scene
+			if(value?.isObject3D) {
+				host.outline = [
+					...host.outline,
+					value,
+				]
+			}
 		},
 	}
 }

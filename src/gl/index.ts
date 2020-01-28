@@ -1,6 +1,9 @@
 import GlObject from './gl-object'
 
 import GlCanvas from './gl-canvas'
+
+import GlSceneOutliner from './gl-scene-outliner'
+
 import GlCamera from './gl-camera'
 	import GlCameraTools from './gl-camera-tools'
 	import GlOrbitControl from './gl-orbit-control'
@@ -18,6 +21,7 @@ import GlDirectionalLight from './gl-directional-light'
 export {
 	GlObject,
 	GlCanvas,
+	GlSceneOutliner,
 	GlCamera,
 	GlCameraTools,
 	GlOrbitControl,

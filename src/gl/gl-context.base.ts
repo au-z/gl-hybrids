@@ -6,9 +6,11 @@ interface GlContext extends HTMLElement {
 }
 
 export default {
-  parent: parent(GlCanvas),
-  gl: ({parent: {gl}}) => gl,
-  canvas: ({gl}) => gl.canvas,
+  _parent: parent(GlCanvas),
+  camera: ({_parent: {camera}}) => camera,
+  canvas: ({_parent: {canvas}}) => canvas,
+  scene: ({_parent: {scene}}) => scene,
+  outline: ({_parent: {outline}}) => outline,
 } as Hybrids<GlContext>
 
 export {

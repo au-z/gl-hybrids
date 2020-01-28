@@ -44,16 +44,20 @@ function proxy<E extends HTMLElement>(
 	return {
 		get: (host) => {
 			const property = getProperty(host)
-			console.log('GET: ', sub, property[sub])
-			return property ? (get ? get(property[sub]) : property[sub]) : null
+			if(property) {
+				// console.log('GET: ', sub, property[sub])
+				return property ? (get ? get(property[sub]) : property[sub]) : null
+			}
 		},
 		set: (host, value) => {
 			const property = getProperty(host)
-			console.log('SET: ', sub, property[sub])
-			return set ? set(property[sub], value) : ((_value) => {
-				property[sub] = _value
-				return property[sub]
-			})(value)
+			if(property) {
+				// console.log('SET: ', sub, property[sub])
+				return set ? set(property[sub], value) : ((_value) => {
+					property[sub] = _value
+					return property[sub]
+				})(value)
+			}
 		},
 		connect: (host, key) => {
 			const attrName = camelToDash(key)

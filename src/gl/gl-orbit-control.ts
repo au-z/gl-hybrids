@@ -9,8 +9,8 @@ interface GlOrbitControl extends HTMLElement {
 export default {
 	parent: parent(GlCamera),
 	camera: ({parent: {camera}}) => camera,
-	renderer: ({parent: {gl: {renderer}}}) => renderer,
+	canvas: ({parent: {canvas}}) => canvas,
 
-	controls: ({camera, renderer}) => new OrbitControls(camera, renderer.domElement),
+	controls: ({camera, canvas}) => new OrbitControls(camera, canvas),
 	render: ({controls}) => html`<meta data-uuid="${controls.object.uuid}"></meta>`
 } as Hybrids<GlOrbitControl>

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import {Hybrids, property} from 'hybrids'
+import {Hybrids, property, dispatch} from 'hybrids'
 import {mapToEnum} from '../util/Map'
 
 import gl from './gl-context.base'
@@ -35,13 +35,14 @@ export default {
 	fov: 75,
 	near: 0.1,
 	far: 1000,
-	camera: ({canvas, gl, fov, near, far}) => {
-		const aspect = canvas.clientWidth / canvas.clientHeight
-		const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
-		gl.onAttach({name: 'camera', asset: camera})
+	camera: (host) => {
+		const aspect = host.canvas.clientWidth / host.canvas.clientHeight
+		const camera = new THREE.PerspectiveCamera(host.fov, aspect, host.near, host.far)
+		dispatch(host, 'load-camera', {detail: camera, bubbles: true})
+		// gl.onAttach({name: 'camera', asset: camera})
 
 		window.addEventListener('resize', () => {
-			camera.aspect = canvas.clientWidth / canvas.clientHeight
+			camera.aspect = host.canvas.clientWidth / host.canvas.clientHeight
 			camera.updateProjectionMatrix()
 		})
 

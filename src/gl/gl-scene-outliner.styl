@@ -1,0 +1,17 @@
+@require '~style/mixins.styl'
+
+*, *:before, *:after {
+  box-sizing: border-box
+}
+
+.scene-outliner {
+	absPos(0, 0, auto, auto)
+	wh(auto, 100%)
+	min-width: 64px
+	max-width: 340px
+	padding: 64px 16px 32px 16px
+	border: 1px solid #ddd
+
+	color: #ddd
+	font-family: 'Consolas', monospace
+}

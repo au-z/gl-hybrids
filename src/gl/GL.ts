@@ -6,6 +6,8 @@ function GL() {
 
   let renderer, camera, scene, updater
 
+  let outline = []
+
   function animate(dt, updater) {
     requestAnimationFrame((dt) => animate(dt, updater))
     updater.run()
@@ -58,6 +60,8 @@ function GL() {
       onUpdate: updater.register,
       renderer,
       scene,
+      // immutable copy of the scene
+      outline,
     }
 
     return instance
