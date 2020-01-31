@@ -27,6 +27,7 @@
 		"html-webpack-plugin": "^3.2.0",
 		"hybrids": "^4.1.2",
 		"jest": "^25.1.0",
+		"jest-environment-happy-dom": "0.0.41",
 		"regenerator-runtime": "^0.13.3",
 		"stylus": "^0.54.7",
 		"stylus-loader": "^3.0.2",
@@ -65,8 +66,7 @@
 		"transformIgnorePatterns": [
 			"node_modules"
 		],
-		"runner": "@jest-runner/electron",
-		"testEnvironment": "@jest-runner/electron/environment"
+		"testEnvironment": "jest-environment-happy-dom"
 	},
 	"browserslist": [
 		"last 2 versions",

@@ -1,106 +1,102 @@
-import {proxy} from 'src/util/proxy'
+import {proxy, jsonProperty} from 'src/util/proxy'
 import {Transformers} from 'src/util/Transformers'
-import {define} from 'hybrids'
+import {property, define} from 'hybrids'
 import {test} from './helpers'
 
 describe('proxy tests', () => {
-	describe('boolean proxy', () => {
-		define('boolean-proxy', {
-			obj: () => ({bool: false}),
-			bool: proxy(({obj}) => obj, 'bool', false),
+	let hy = null
+
+	describe('basic properties and json properties', () => {
+		define('basic-property', {
+			bool: false,
+			num: 0,
+			str: '',
+			vec: jsonProperty([0, 0, 0]),
+			obj: jsonProperty({foo: 'bar'}),
 		})
 
-		it('exposes the default boolean', () => {
-			test(`<boolean-proxy/>`)((el) => {
-				expect(el.obj).toMatchObject({bool: false})
-				expect(el.bool).toBe(false)
-			})
-		})
+		hy = test(`<basic-property>`)
+		it('sets the appropriate defaults', hy((el) => {
+			expect(el.bool).toBe(false)
+			expect(el.num).toBe(0)
+			expect(el.str).toBe('')
+			expect(el.vec).toMatchObject([0, 0, 0])
+			expect(el.obj).toMatchObject({foo: 'bar'})
+		}))
 
-		it('assigns the value from attribute', () => {
-			test(`<boolean-proxy bool/>`)((el) => {
-				expect(el.obj).toMatchObject({bool: true})
-				expect(el.bool).toBe(true)
-			})
-		})
+		hy = test(`<basic-property bool num="42" str="hello" vec="[1, 2, 3]" obj="{'foo': 'baz'}"/>`)
+		it('sets the properties from attributes', hy((el) => {
+			expect(el.bool).toBe(true)
+			expect(el.num).toBe(42)
+			expect(el.str).toBe('hello')
+			expect(el.vec).toMatchObject([1, 2, 3])
+			expect(el.obj).toMatchObject({foo: 'baz'})
+		}))
 	})
 
-	describe('number proxy', () => {
-		define('number-proxy', {
-			obj: () => ({num: 0}),
-			num: proxy(({obj}) => obj, 'num', 0),
+	describe('object proxy', () => {
+		const selector = ({objProperty}) => objProperty
+		define('object-proxy', {
+			objProperty: () => ({
+				bool: false,
+				num: 0,
+				str: '',
+				vec: [0, 0, 0],
+				obj: {foo: 'bar'},
+			}),
+			bool: proxy(selector, 'bool', property(false)),
+			num: proxy(selector, 'num', property(0)),
+			str: proxy(selector, 'str', property('')),
+			vec: proxy(selector, 'vec', jsonProperty([0, 0, 0])),
+			obj: proxy(selector, 'obj', jsonProperty({})),
 		})
 
-		it('exposes the default number', () => {
-			test(`<number-proxy/>`)((el) => {
-				expect(el.obj).toMatchObject({num: 0})
-				expect(el.num).toBe(0)
-			})
-		})
+		hy = test(`<object-proxy/>`)
+		it('proxies the property defaults', hy((el) => {
+			expect(el.bool).toBe(false)
+			expect(el.num).toBe(0)
+			expect(el.str).toBe('')
+			expect(el.vec).toMatchObject([0, 0, 0])
+			expect(el.obj).toMatchObject({foo: 'bar'})
+		}))
 
-		it('assigns the value from attribute', () => {
-			test(`<number-proxy num="42"/>`)((ex) => {
-				expect(el.obj).toMatchObject({num: 42})
-				expect(el.num).toBe(42)
-			})
-		})
+		hy = test(`<object-proxy bool num="42" str="hi" vec="[1, 1, 1]"/>`)
+		it.only('assigns the value from attribute', hy((el) => {
+			expect(el.bool).toBe(true)
+			expect(el.num).toBe(42)
+			expect(el.str).toBe('hi')
+			expect(el.vec).toMatchObject([1, 1, 1])
+		}))
 	})
 
-	describe('string proxy', () => {
-		define('string-proxy', {
-			obj: () => ({str: ''}),
-			str: proxy(({obj}) => obj, 'str', 'hello'),
-		})
+	// describe('transformers', () => {
+	// 	describe('boolean inversion', () => {
+	// 		define('boolean-inversion', {
+	// 			obj: () => ({on: true}),
+	// 			off: proxy(({obj}) => obj, 'on', false, Transformers.bool.invert),
+	// 		})
 
-		it('exposes the default string', () => {
-			test(`<string-proxy/>`)((el) => {
-				expect(el.obj).toMatchObject({str: 'hello'})
-				expect(el.str).toBe('hello')
-			})
-		})
+	// 		it('inverts the proxied property', () => {
+	// 			test(`<boolean-inversion off/>`)((el) => {
+	// 				expect(el.obj.on).toBe(false)
+	// 				expect(el.off).toBe(true)
+	// 			})
+	// 		})
+	// 	})
 
-		it('assigns the value from attribute', () => {
-			test(`<string-proxy str="goodbye"/>`)((el) => {
-				expect(el.obj).toMatchObject({str: 'goodbye'})
-				expect(el.str).toBe('goodbye')
-			})
-		})
-	})
+	// 	describe('THREEJS euler transform', () => {
+	// 		define('euler-transform', {
+	// 			obj: () => new THREE.Object3D(),
+	// 			rotation: proxy(({obj}) => obj, 'rotation', '', Transformers.string.euler),
+	// 		})
 
-	describe('array proxy', () => {
-		define('array-proxy', {
-			obj: () => ({arr: [1, 2, 3]}),
-			arr: proxy(({obj}) => obj, 'arr', [0, 0, 0])
-		})
-
-		it('exposes the default array', () => {
-			test(`<array-proxy/>`)((el) => {
-				expect(el.obj).toMatchObject({arr: [0, 0, 0]})
-				expect(el.arr).toMatchObject([0, 0, 0])
-			})
-		})
-
-		it('allows for the attribute to be set', () => {
-			test(`<array-proxy arr="[1, 1, 1]"/>`)((el) => {
-				expect(el.obj).toMatchObject({arr: [1, 1, 1]})
-				expect(el.arr).toMatchObject([1, 1, 1])
-			})
-		})
-	})
-
-	describe('transformers', () => {
-		describe('boolean inversion', () => {
-			define('boolean-inversion', {
-				obj: () => ({on: true}),
-				off: proxy(({obj}) => obj, 'on', false, Transformers.bool.invert),
-			})
-
-			it('inverts the proxied property', () => {
-				test(`<boolean-inversion off/>`)((el) => {
-					expect(el.obj.on).toBe(false)
-					expect(el.off).toBe(true)
-				})
-			})
-		})
-	})
+	// 		it('initializes with the default rotation', () => {
+	// 			test(`<euler-transform/>`)((el) => {
+	// 				expect(el.rotation).toMatchObject([0, 0, 0, 'XYZ'])
+	// 				console.log(el.obj.rotation)
+	// 				// expect(el.obj.rotation).toBe(2)
+	// 			})
+	// 		})
+	// 	})
+	// })
 })
