@@ -1,9 +1,11 @@
 import * as THREE from 'three'
-import {Hybrids, property, dispatch} from 'hybrids'
+import {Hybrids, property} from 'hybrids'
 import {mapToEnum} from '../util/Map'
 
 import gl from './gl-context.base'
 import { GlObject3DMixin } from './gl-object'
+import { dispatchOnCreate } from 'src/factories'
+import { PerspectiveCamera } from 'three'
 
 enum CAMERATYPE {
 	perspective = 'PERSPECTIVE',
@@ -12,16 +14,19 @@ enum CAMERATYPE {
 }
 
 function Camera({type, fov, aspect, near, far}: GlCamera) {
-	let camera
 	switch(type) {
 		case CAMERATYPE.isometric:
-			camera = {}; break;
+			return {}
 		case CAMERATYPE.perspective:
 		default:
-			camera = new THREE.PerspectiveCamera(fov, aspect, near, far); break;
+			return new THREE.PerspectiveCamera(fov, aspect, near, far)
 	}
-	console.log('Camera uuid: ', camera.uuid)
-	return camera
+}
+
+function updateCamera(host, camera) {
+	if(!camera) return
+	camera.aspect = host.canvas.clientWidth / host.canvas.clientHeight
+	camera.updateProjectionMatrix()
 }
 
 interface GlCamera extends HTMLElement {
@@ -30,22 +35,19 @@ interface GlCamera extends HTMLElement {
 
 export default {
 	...gl,
-	...GlObject3DMixin(({camera}) => camera),
 	type: property(mapToEnum.bind(null, CAMERATYPE)),
 	fov: 75,
 	near: 0.1,
 	far: 1000,
-	camera: (host) => {
-		const aspect = host.canvas.clientWidth / host.canvas.clientHeight
-		const camera = new THREE.PerspectiveCamera(host.fov, aspect, host.near, host.far)
-		dispatch(host, 'load-camera', {detail: camera, bubbles: true})
-		// gl.onAttach({name: 'camera', asset: camera})
 
-		window.addEventListener('resize', () => {
-			camera.aspect = host.canvas.clientWidth / host.canvas.clientHeight
-			camera.updateProjectionMatrix()
-		})
+	aspect: ({canvas}) => canvas.clientWidth / canvas.clientHeight,
 
-		return camera
-	},
+	camera: dispatchOnCreate('load-camera', {
+		get: Camera,
+		connect: (host, key) => {
+			window.addEventListener('resize', updateCamera.bind(null, host, host[key]))
+		},
+	}),
+	// camera: () => new PerspectiveCamera(75, 1, 0.1, 1000),
+	...GlObject3DMixin(({camera}) => camera),
 } as Hybrids<GlCamera>

@@ -2,7 +2,7 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import { Hybrids, property, html } from "hybrids"
 import { mapToEnum } from "../util/Map"
 import gl from "./gl-context.base"
-import GlAssetFactory from './GlAsset.factory'
+import GlAssetFactory from './gl-asset.factory'
 import { GlObject3DMixin } from './gl-object'
 
 enum MODEL_TYPE {

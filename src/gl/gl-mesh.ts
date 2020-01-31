@@ -1,8 +1,8 @@
-import * as THREE from 'three'
+import {Mesh, BoxGeometry, MeshBasicMaterial, PointLight} from 'three'
 import {Hybrids, children} from 'hybrids'
 
 import gl from './gl-context.base'
-import GlAssetFactory from './GlAsset.factory'
+import GlAssetFactory from './gl-asset.factory'
 import {GlObject3D, GlObject3DMixin} from './gl-object'
 
 import GlGeometry from './gl-geometry'
@@ -29,9 +29,12 @@ interface GlMesh extends GlObject3D {
 export default {
   ...gl,
   ...GlObject3DMixin(({mesh}) => mesh),
-  ...childOrDefault('geometry', GlGeometry, new THREE.BoxGeometry(1, 1, 1)),
-  ...childOrDefault('material', GlMaterial, new THREE.MeshBasicMaterial({color: 0x999999})),
+  // ...childOrDefault('geometry', GlGeometry, new BoxGeometry(1, 1, 1)),
+  // ...childOrDefault('material', GlMaterial, new MeshBasicMaterial({color: 0x999999})),
   mesh: GlAssetFactory({
-    get: ({geometry, material}) => new THREE.Mesh(geometry, material),
+    get: ({geometry, material}, value) => value || new Mesh(geometry, material),
+  }),
+  light: GlAssetFactory({
+    get: (host) => new PointLight(0xffffff, 1, 0, 2),
   }),
 } as Hybrids<GlMesh>
