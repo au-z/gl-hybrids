@@ -1,6 +1,8 @@
+import * as THREE from 'three'
 import {proxy, jsonProperty} from 'src/util/proxy'
 import {Transformers} from 'src/util/Transformers'
-import {property, define} from 'hybrids'
+import property from 'src/util/localProperty'
+import {define} from 'hybrids'
 import {test} from './helpers'
 
 describe('proxy tests', () => {
@@ -34,28 +36,48 @@ describe('proxy tests', () => {
 	// 	}))
 	// })
 
-	describe('array proxy', () => {
-		define('array-proxy', {
-			obj: () => ({vec: [0, 0, 0]}),
-			vec: proxy(({obj}) => obj, 'vec', jsonProperty([1, 1, 1])),
+	describe('number-proxy', () => {
+		define('number-proxy', {
+			obj: () => ({num: 0}),
+			num: proxy(({obj}) => obj, 'num', property(0)),
 		})
 
-		hy = test(`<array-proxy/>`)
-		it('sets the property default over the original value', hy((el) => {
-			expect(el.obj).toMatchObject({vec: [0, 0, 0]})
-			// expect(el.vec).toMatchObject([1, 1, 1])
+		hy = test(`<number-proxy/>`)
+		// it('sets the property default', hy((el) => {
+		// 	expect(el.obj.num).toBe(0)
+		// 	expect(el.num).toBe(0)
+		// }))
+
+		it('can assign the property', hy((el) => {
+			el.num = 42
+			expect(el.obj.num).toBe(42)
+			expect(el.num).toBe(42)
 		}))
-
-		// it('changes the values in sync when assigned', hy((el) => {
-		// 	el.vec = [1, 1, 1]
-		// 	expect(el.vec).toMatchObject(el.obj.vec)
-		// }))
-
-		// hy = test(`<array-proxy vec="['A', 'A', 'A']"/>`)
-		// it('can assign an array from the attribute value', hy((el) => {
-		// 	expect(el.obj.vec).toMatchObject(['A', 'A', 'A'])
-		// }))
 	})
+
+	// describe('array proxy', () => {
+	// 	define('array-proxy', {
+	// 		obj: () => ({vec: [0, 0, 0]}),
+	// 		vec: proxy(({obj}) => obj, 'vec', jsonProperty([0, 0, 0]), Transformers.string.vec3),
+	// 	})
+
+	// 	hy = test(`<array-proxy/>`)
+	// 	it('sets the property default over the original value', hy((el) => {
+	// 		expect(el.obj).toMatchObject({vec: [0, 0, 0]})
+	// 		expect(el.vec).toMatchObject([0, 0, 0])
+	// 	}))
+
+	// 	it('changes the values in sync when assigned', hy((el) => {
+	// 		el.vec = [1, 1, 1]
+	// 		expect(el.vec).toMatchObject(el.obj.vec)
+	// 	}))
+
+	// 	hy = test(`<array-proxy vec="[1, 1, 1]"/>`)
+	// 	it('can assign an array from the attribute value', hy((el) => {
+	// 		expect(el.obj.vec).toMatchObject([1, 1, 1])
+	// 		// expect(el.vec).toMatchObject([1, 1, 1])
+	// 	}))
+	// })
 
 	// describe('object proxy', () => {
 	// 	function Object() {

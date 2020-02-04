@@ -39,18 +39,6 @@
 		"webpack-cli": "^3.3.10",
 		"webpack-dev-server": "^3.10.1"
 	},
-	"babel": {
-		"presets": [
-			[
-				"@babel/preset-env",
-				{
-					"useBuiltIns": "usage",
-					"corejs": 3
-				}
-			],
-			"@babel/preset-typescript"
-		]
-	},
 	"jest": {
 		"transform": {
 			"^.*\\.(j|t)sx?$": "babel-jest"
@@ -65,7 +53,7 @@
 			"src/(.*)$": "<rootDir>/src/$1"
 		},
 		"transformIgnorePatterns": [
-			"node_modules"
+			"/node_modules/(?!hybrids).+\\.js$"
 		],
 		"testEnvironment": "jest-environment-happy-dom"
 	},

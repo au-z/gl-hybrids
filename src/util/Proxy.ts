@@ -1,9 +1,10 @@
-import { Descriptor, property, Property } from 'hybrids'
+import { Descriptor, Property } from 'hybrids'
+import property from './localProperty.js'
 
-const defaultTransform = (propertyName) => ({
+const defaultTransform = (key) => ({
 	get: (proxy, value) => value,
 	set: (proxy, value) => {
-		proxy[propertyName] = value
+		proxy[key] = value
 		return value
 	},
 	connect: (value) => value,
@@ -14,19 +15,28 @@ interface ProxySelectorFn<E extends HTMLElement> {
 }
 
 /**
- * Extends an existing property's property to the api
+ * Extends an existing property's property to the hybrids api
  */
-function proxy<E extends HTMLElement>(proxySelector: ProxySelectorFn<E>, propertyName: string, customProperty, transform?): Descriptor<E> {
-	transform = transform ? transform(propertyName) : defaultTransform(propertyName)
+function proxy<E extends HTMLElement>(selector: ProxySelectorFn<E>, key, property, transform?): Descriptor<E> {
+	transform = transform ? transform(key) : defaultTransform(key)
 
-	console.log(arguments)
 	return {
-		get: (host) => transform.get(proxySelector(host)[propertyName]),
-		set: (host, value, last) => {
-			value = customProperty.set(host, value, last)
-			return transform.set(proxySelector(host), value)
+		get: (host, value) => {
+			value = value || selector(host)[key]
+			// console.log('GET: ', value)
+			value = transform.get(value)
+			console.log('GET: ', value)
+			return property.get(host, value)
 		},
-		connect: customProperty.connect,
+		set: (host, value, last) => {
+			console.log('SET: ', value, last, selector(host)[key])
+			transform.set(selector(host), value)
+			console.log('POST-SET: ', selector(host)[key], value, last)
+			return property.set(host, value, last)
+		},
+		connect: (host, propName, invalidate) => {
+			return property.connect && property.connect(host, propName, invalidate)
+		},
 	}
 }
 
@@ -37,12 +47,11 @@ function proxy<E extends HTMLElement>(proxySelector: ProxySelectorFn<E>, propert
  */
 function jsonProperty<E extends HTMLElement>(defaultValue: any, connect): Property<E> {
 	const parse = (value) => {
-		console.log(value, typeof value)
 		try {
 			return (value && value !== '') ? JSON.parse(value.replace(/'/gim, '"')) : defaultValue
 		} catch (ex) {
 			console.error('[jsonProperty] Error parsing JSON. \n\t', ex)
-			return null
+			return defaultValue
 		}
 	}
 
