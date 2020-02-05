@@ -6,10 +6,10 @@
 ```js
 html`
   <gl-canvas width="100vw" height="100vh" clearColor="0xffffff">
-    <gl-camera type="perspective" fov="75" position="${cameraPos}"></gl-camera>
-    <gl-point-light position="${[0.5, 0, -2]}" intensity="10"></gl-point-light>
-    <gl-point-light position="${[2, 3, 2]}" intensity="3"></gl-point-light>
-    <gl-point-light position="${[-2, 3, 2]}" intensity="4"></gl-point-light>
+    <gl-camera type="perspective" fov="75" position="[0, 0, 5]"></gl-camera>
+    <gl-point-light position="[0.5, 0, -2]" intensity="10"></gl-point-light>
+    <gl-point-light position="[2, 3, 2]" intensity="3"></gl-point-light>
+    <gl-point-light position="[-2, 3, 2]" intensity="4"></gl-point-light>
 
     <gl-model type="gltf" src="/path/to/model.gltf"><gl-model>
   </gl-canvas>
