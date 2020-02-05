@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== "production") module.hot.accept();
+// if (process.env.NODE_ENV !== "production") module.hot.accept();
 
 import style from './style/main.styl'
 import {html, define} from 'hybrids'
@@ -18,13 +18,14 @@ define("app-root", {
 				<gl-camera-tools></gl-camera-tools>
 			</gl-camera>
 
-			<gl-mesh></gl-mesh>
+			<!-- <gl-mesh></gl-mesh> -->
 
+			<gl-hemisphere-light sky-color="0xff000f" position="[0, 3, 0]" helper></gl-hemisphere-light>
 			<!-- <gl-point-light position="[1, 0.5, -3]" intensity="10" helper></gl-point-light>
 			<gl-directional-light position="[2, 3, 3]" helper></gl-directional-light>
-			<gl-directional-light position="[-2, 1, 3]" helper></gl-directional-light>
+			<gl-directional-light position="[-2, 1, 3]" helper></gl-directional-light> -->
 
-			<gl-model type="gltf" src="/static/models/scifi-helmet/SciFiHelmet.gltf" position="[0, 0, 0]"></gl-model> -->
+			<gl-model type="gltf" src="/static/models/scifi-helmet/SciFiHelmet.gltf" position="[1, 0, 0]" bbox></gl-model>
 			<!-- <gl-model type="gltf" src="/static/models/flight-helmet/FlightHelmet.gltf"></gl-model> -->
 		</gl-canvas>
 	`.define({...glElements, ProxyTest}),

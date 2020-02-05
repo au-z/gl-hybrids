@@ -17,6 +17,7 @@ import GlMesh from './gl-mesh'
 
 import GlPointLight from './gl-point-light'
 import GlDirectionalLight from './gl-directional-light'
+import GlHemisphereLight from './gl-hemisphere-light'
 
 export {
 	GlObject,
@@ -32,4 +33,5 @@ export {
 	GlMaterial,
 	GlPointLight,
 	GlDirectionalLight,
+	GlHemisphereLight,
 }

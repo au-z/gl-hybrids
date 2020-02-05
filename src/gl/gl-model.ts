@@ -4,6 +4,7 @@ import { mapToEnum } from "../util/Map"
 import gl from "./gl-context.base"
 import GlAssetFactory from './gl-asset.factory'
 import { GlObject3DMixin } from './gl-object'
+import * as THREE from 'three'
 
 enum MODEL_TYPE {
   gltf = 'GLTF'
@@ -26,6 +27,9 @@ export default {
       value && fetchModel(value).then(({scene}) => host.model = scene)
     },
   },
-  model: GlAssetFactory({}),
+  model: GlAssetFactory({
+    get: (host, value) => value || new THREE.Object3D(),
+    set: (host, value) => value,
+  }),
 } as Hybrids<GlModel>
 
