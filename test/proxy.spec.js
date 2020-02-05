@@ -150,6 +150,13 @@ describe('proxy tests', () => {
 		}))
 	})
 
+	describe('async object proxy', () => {
+		define('async-object-proxy', {
+			obj: (host, value) => Promise.resolve(new THREE.Object3D()),
+
+		})
+	})
+
 	describe('proxy transformers', () => {
 		describe('boolean inversion', () => {
 			define('boolean-inversion', {
