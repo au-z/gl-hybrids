@@ -25,7 +25,6 @@ export default {
 
 	light: GlAssetFactory({
 		get: ({color, intensity, distance, decay}, value) => {
-			console.log(color, intensity, distance, decay)
 			return value ?? new THREE.PointLight(color, intensity, distance, decay)
 		},
 	}),

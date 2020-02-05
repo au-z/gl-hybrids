@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Hybrids, property} from 'hybrids'
+import { Hybrids, property } from 'hybrids'
 import gl from './gl-context.base'
 import GlAssetFactory from './gl-asset.factory'
 import { GlObject3DMixin } from './gl-object'
@@ -27,15 +27,15 @@ interface GlDirectionalLight extends HTMLElement {
 export default {
 	...gl,
 	...GlObject3DMixin(({light}) => light),
-	// color: 0xffffff,
-	// intensity: 1,
-	helper: false,
+	color: 0xffffff,
+	intensity: 1,
 	// target: findInScene({id: 'camera', property: 'camera'}),
 	light: GlAssetFactory({
-		get: ({target, color, intensity}) => {
-			return new THREE.DirectionalLight(color, intensity)
+		get: ({color, intensity}, value) => {
+			return value ?? new THREE.DirectionalLight(color, intensity)
 		}
 	}),
+	helper: false,
 	lightHelper: GlAssetFactory({
 		get: ({helper, light}, value) => {
 			if(helper) {

@@ -4,7 +4,7 @@ function Scene({clearColor}, value) {
   if(value) return value
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(clearColor)
-  scene.add(new THREE.AxesHelper(1))
+  // scene.add(new THREE.AxesHelper(1))
   return scene
 }
 

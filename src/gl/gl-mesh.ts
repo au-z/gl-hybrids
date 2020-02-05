@@ -29,8 +29,8 @@ interface GlMesh extends GlObject3D {
 export default {
   ...gl,
   ...GlObject3DMixin(({mesh}) => mesh),
-  // ...childOrDefault('geometry', GlGeometry, new BoxGeometry(1, 1, 1)),
-  // ...childOrDefault('material', GlMaterial, new MeshBasicMaterial({color: 0x999999})),
+  ...childOrDefault('geometry', GlGeometry, new BoxGeometry(1, 1, 1)),
+  ...childOrDefault('material', GlMaterial, new MeshBasicMaterial({color: 0x999999})),
   mesh: GlAssetFactory({
     get: ({geometry, material}, value) => value || new Mesh(geometry, material),
   }),

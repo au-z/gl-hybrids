@@ -1,7 +1,7 @@
 import {Hybrids} from 'hybrids'
 import gl from './gl-context.base'
 import GlAssetFactory from './gl-asset.factory'
-import {proxy} from 'src/util/Proxy'
+import {proxy, jsonProperty} from 'src/util/Proxy'
 import {Transformers} from 'src/util/Transformers'
 import { Object3D, BoxHelper, Color} from 'three'
 
@@ -22,13 +22,13 @@ interface PropertySelectorFn<T> {
 
 function GlObject3DMixin(selectFn: PropertySelectorFn<Object3D>): Hybrids<GlObject3D> {
   return {
-    castShadow: proxy(selectFn, 'castShadow', false),
-    id: proxy(selectFn, 'id', 0),
-    name: proxy(selectFn, 'name', ''),
-    position: proxy(selectFn, 'position', '', Transformers.string.vector3),
-    rotation: proxy(selectFn, 'rotation', '', Transformers.string.euler),
-    scale: proxy(selectFn, 'scale', '', Transformers.string.vector3),
-    invisible: proxy(selectFn, 'visible', false, Transformers.bool.invert),
+    castShadow: proxy(selectFn, 'castShadow'),
+    id: proxy(selectFn, 'id'),
+    name: proxy(selectFn, 'name'),
+    position: proxy(selectFn, 'position', jsonProperty, Transformers.array.vector3),
+    rotation: proxy(selectFn, 'rotation', jsonProperty, Transformers.array.euler),
+    scale: proxy(selectFn, 'scale', jsonProperty, Transformers.array.vector3),
+    invisible: proxy(selectFn, 'visible', Transformers.bool.invert),
     bbox: false,
     boxHelper: {
       ...GlAssetFactory({
