@@ -1,32 +1,25 @@
 import * as THREE from 'three'
 import {Hybrids} from 'hybrids'
-import gl from './gl-context.base'
-import GlAssetFactory from './gl-asset.factory'
-import { GlObject3DMixin } from './gl-object'
+import sceneObject from 'src/factory/sceneObject'
+import { glObject } from './base/glObject'
 
 interface GlPointLight extends HTMLElement {
 	[key: string]: any
 }
 
 export default {
-	...gl,
 	color: 0xffffff,
 	intensity: 1,
 	distance: 0,
 	decay: 2,
+	...glObject(({light}) => light),
+	light: sceneObject({
+		get: ({color, intensity, distance, decay}, value) =>
+			value ?? new THREE.PointLight(color, intensity, distance, decay),
+	}),
 	helper: false,
-	lightHelper: GlAssetFactory({
-		get: ({helper, light}, value) => {
-			if(helper) {
-				return new THREE.PointLightHelper(light, 0.33)
-			}
-		},
-	}),
-
-	light: GlAssetFactory({
-		get: ({color, intensity, distance, decay}, value) => {
-			return value ?? new THREE.PointLight(color, intensity, distance, decay)
-		},
-	}),
-	...GlObject3DMixin(({light}) => light),
+	lightHelper: {
+		get: ({helper, light}, value) => helper && new THREE.PointLightHelper(light, 0.33),
+		connect: (host, key) => host[key] && host.light.attach(host[key])
+	},
 } as Hybrids<GlPointLight>

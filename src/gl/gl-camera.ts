@@ -2,10 +2,9 @@ import * as THREE from 'three'
 import {Hybrids, property} from 'hybrids'
 import {mapToEnum} from '../util/Map'
 
-import gl from './gl-context.base'
-import { GlObject3DMixin } from './gl-object'
+import gl from './base/glContext'
 import { dispatchOnCreate } from 'src/factories'
-import { PerspectiveCamera } from 'three'
+import glObject from './base/glObject'
 
 enum CAMERATYPE {
 	perspective = 'PERSPECTIVE',
@@ -39,15 +38,12 @@ export default {
 	fov: 75,
 	near: 0.1,
 	far: 1000,
-
+	...glObject(({camera}) => camera),
 	aspect: ({canvas}) => canvas.clientWidth / canvas.clientHeight,
-
 	camera: dispatchOnCreate('load-camera', {
 		get: Camera,
 		connect: (host, key) => {
 			window.addEventListener('resize', updateCamera.bind(null, host, host[key]))
 		},
 	}),
-	// camera: () => new PerspectiveCamera(75, 1, 0.1, 1000),
-	...GlObject3DMixin(({camera}) => camera),
 } as Hybrids<GlCamera>

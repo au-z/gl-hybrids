@@ -1,32 +1,25 @@
-import gl from 'src/gl/gl-context.base'
-import {GlObject3DMixin} from 'src/gl/gl-object'
 import {Hybrids} from 'hybrids'
-import GlAssetFactory from './gl-asset.factory'
-import {HemisphereLight, HemisphereLightHelper, Object3D, Vector3, Euler} from 'three'
+import {HemisphereLight, HemisphereLightHelper} from 'three'
+import sceneObject from '../factory/sceneObject'
+import { glObject, GlObject3D } from './base/glObject'
 
-interface GlHemisphereLight extends HTMLElement {
+interface GlHemisphereLight extends GlObject3D {
 	[key: string]: any
 }
 
 export default {
-	...GlObject3DMixin(({light}) => light),
 	skyColor: 0xffffff,
 	groundColor: 0xffffff,
 	intensity: 1,
-	light: {
-		get: ({skyColor, groundColor, intensity}, value) => new Object3D(),
-		observe: (host, value, last) => {
-
-		}
+	...glObject(({light}) => light),
+	light: sceneObject({
+		get: ({skyColor, groundColor, intensity}, value) => new HemisphereLight(skyColor, groundColor, intensity),
+	}),
+	helper: false,
+	lightHelper: {
+		get: ({helper, light}, value) => helper && new HemisphereLightHelper(light, 0.3, 0xffffff),
+		connect: (host, key) => host[key] && host.light.attach(host[key])
 	},
-	// helper: false,
-	// lightHelper: GlAssetFactory({
-	// 	get: ({helper, light, skyColor}, value) => {
-	// 		if(helper) {
-	// 			return new HemisphereLightHelper(light, 0.33, skyColor)
-	// 		}
-	// 	},
-	// }),
 } as Hybrids<GlHemisphereLight>
 
 export {

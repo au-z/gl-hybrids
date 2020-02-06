@@ -1,6 +1,6 @@
 import style from './gl-record.styl'
 import { Hybrids, html } from 'hybrids'
-import gl from './gl-context.base'
+import gl from './base/glContext'
 
 function Recorder({canvas}) {
 	const mediaSource = new MediaSource()

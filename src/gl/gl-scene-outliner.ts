@@ -1,6 +1,6 @@
 import style from './gl-scene-outliner.styl'
 import { Hybrids, html } from "hybrids";
-import gl from './gl-context.base'
+import gl from './base/glContext'
 
 import OutlinerAssets from './outliner-assets'
 

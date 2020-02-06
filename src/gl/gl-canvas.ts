@@ -7,10 +7,8 @@ function animate(dt, host) {
   host.renderer.render(host.scene, host.camera)
 }
 
-function setCamera(host, e) {
-  console.log(host, e)
-  host.camera = e.detail
-}
+const setCamera = (host, e) => host.camera = e.detail
+const addToScene = ({scene}, e) => scene.add(e.detail)
 
 interface GlCanvas extends HTMLElement {
   [key: string]: any
@@ -32,6 +30,6 @@ export default {
   outline: [],
   render: ({width, height}) => html`
     <canvas class="gl-canvas" style="${{width, height}}"></canvas>
-    <slot onload-camera="${setCamera}"></slot>
+    <slot onload-camera="${setCamera}" onscene-add="${addToScene}"></slot>
   `,
 } as Hybrids<GlCanvas>

@@ -1,8 +1,7 @@
-import * as THREE from 'three'
-import { Hybrids, property } from 'hybrids'
-import gl from './gl-context.base'
-import GlAssetFactory from './gl-asset.factory'
-import { GlObject3DMixin } from './gl-object'
+import {DirectionalLight, DirectionalLightHelper} from 'three'
+import {Hybrids} from 'hybrids'
+import sceneObject from 'src/factory/sceneObject'
+import { glObject, GlObject3D } from './base/glObject'
 
 // TODO
 function findInScene({id, property}): any {
@@ -20,27 +19,24 @@ function findInScene({id, property}): any {
 	}
 }
 
-interface GlDirectionalLight extends HTMLElement {
+interface GlDirectionalLight extends GlObject3D {
 	[key: string]: any
 }
 
 export default {
-	...gl,
-	...GlObject3DMixin(({light}) => light),
+	...glObject(({light}) => light),
 	color: 0xffffff,
 	intensity: 1,
 	// target: findInScene({id: 'camera', property: 'camera'}),
-	light: GlAssetFactory({
-		get: ({color, intensity}, value) => {
-			return value ?? new THREE.DirectionalLight(color, intensity)
-		}
+	light: sceneObject({
+		get: ({color, intensity}, value) => value ?? new DirectionalLight(color, intensity),
 	}),
 	helper: false,
-	lightHelper: GlAssetFactory({
-		get: ({helper, light}, value) => {
-			if(helper) {
-				return new THREE.DirectionalLightHelper(light, 0.33, 0xffffff)
-			}
+	lightHelper: {
+		get: ({helper, light}, value) => helper && new DirectionalLightHelper(light, 0.3, 0xffffff),
+		connect: (host, key) => {
+			if(host[key]) host.light.attach(host[key])
+			else console.log(host[key])
 		},
-	}),
+	},
 } as Hybrids<GlDirectionalLight>

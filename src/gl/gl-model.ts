@@ -1,10 +1,9 @@
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import { Hybrids, property, html } from "hybrids"
 import { mapToEnum } from "../util/Map"
-import gl from "./gl-context.base"
-import GlAssetFactory from './gl-asset.factory'
-import { GlObject3DMixin } from './gl-object'
-import * as THREE from 'three'
+import glObject from './base/glObject'
+import sceneObject from 'src/factory/sceneObject'
+import { Object3D } from 'three'
 
 enum MODEL_TYPE {
   gltf = 'GLTF'
@@ -18,8 +17,7 @@ interface GlModel extends HTMLElement {
 }
 
 export default {
-  ...gl,
-  ...GlObject3DMixin(({model}) => model),
+  ...glObject(({model}) => model),
   type: property(mapToEnum.bind(null, MODEL_TYPE, MODEL_TYPE.gltf)),
   src: {
     ...property(''),
@@ -27,8 +25,8 @@ export default {
       value && fetchModel(value).then(({scene}) => host.model = scene)
     },
   },
-  model: GlAssetFactory({
-    get: (host, value) => value || new THREE.Object3D(),
+  model: sceneObject({
+    get: (host, value) => value,
     set: (host, value) => value,
   }),
 } as Hybrids<GlModel>
