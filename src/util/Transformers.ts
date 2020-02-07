@@ -1,3 +1,5 @@
+import { Color } from "three"
+
 const Transformers = {
 	array: {
 		vector3: (property) => ({
@@ -12,6 +14,15 @@ const Transformers = {
 			set: (obj, [x, y, z, order = 'XYZ']) => {
 				obj[property].set(x, y, z, order)
 				return [x, y, z, order]
+			},
+		}),
+	},
+	hex: {
+		color: (property) => ({
+			get: (color) => color.getHex(),
+			set: (obj, hex) => {
+				obj[property].set(hex)
+				return hex
 			},
 		}),
 	},

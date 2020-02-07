@@ -27,7 +27,6 @@ export default {
   renderer: GL.Renderer,
   updater: GL.Updater,
   scene: GL.Scene,
-  outline: [],
   render: ({width, height}) => html`
     <canvas class="gl-canvas" style="${{width, height}}"></canvas>
     <slot onload-camera="${setCamera}" onscene-add="${addToScene}"></slot>

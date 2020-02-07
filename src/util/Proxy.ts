@@ -53,5 +53,6 @@ function jsonProperty<E extends HTMLElement>(defaultValue: any, connect): Proper
 
 export {
 	proxy,
+	ProxySelectorFn,
 	jsonProperty,
 }

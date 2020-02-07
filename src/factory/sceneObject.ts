@@ -8,9 +8,5 @@ export default function sceneObject<E extends HTMLElement>({get, set, connect, o
 			host[key] && dispatch(host, 'scene-add', {detail: host[key], bubbles: true, composed: true})
 			return connect && connect(host, key, invalidate)
 		},
-		observe: (host, value, last) => {
-			if(!!value && !last) dispatch(host, 'scene-add', {detail: value, bubbles: true, composed: true})
-			observe && observe(host, value, last)
-		},
 	}
 }

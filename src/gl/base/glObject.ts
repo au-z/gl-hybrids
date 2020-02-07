@@ -1,7 +1,7 @@
-import { proxy, jsonProperty } from "src/util/Proxy"
-import { Transformers } from "src/util/Transformers"
-import { Object3D, BoxHelper, Color } from "three"
-import { Hybrids } from "hybrids"
+import { proxy, jsonProperty } from 'src/util/Proxy'
+import { Transformers } from 'src/util/Transformers'
+import { BoxHelper, Color } from 'three'
+import { Hybrids } from 'hybrids'
 
 interface GlObject3D extends HTMLElement {
 	castShadow: boolean
@@ -14,11 +14,7 @@ interface GlObject3D extends HTMLElement {
 	[key: string]: any
 }
 
-interface PropertySelectorFn<T> {
-	(host: GlObject3D): T
-}
-
-export default function glObject(selectFn: PropertySelectorFn<Object3D>): Hybrids<GlObject3D> {
+export default function glObject(selectFn): Hybrids<GlObject3D> {
 	return {
 		castShadow: proxy(selectFn, 'castShadow'),
 		id: proxy(selectFn, 'id'),

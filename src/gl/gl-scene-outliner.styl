@@ -1,4 +1,5 @@
 @require '~style/mixins.styl'
+@require '~font-awesome/css/font-awesome.css'
 
 *, *:before, *:after {
   box-sizing: border-box
@@ -14,4 +15,19 @@
 
 	color: #ddd
 	font-family: 'Consolas', monospace
+	font-size: 0.85rem
+	color: #aaa
+	ul {
+		margin: 0
+		padding-left: 12px
+		& > li {
+			padding: 4px
+			flexXY(start, center)
+		}
+	}
+
+	i.fa {
+		font-family: 'FontAwesome'
+		width: 1.8rem
+	}
 }

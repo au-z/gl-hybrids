@@ -23,8 +23,8 @@ function Camera({type, fov, aspect, near, far}: GlCamera) {
 }
 
 function updateCamera(host, camera) {
-	if(!camera) return
 	camera.aspect = host.canvas.clientWidth / host.canvas.clientHeight
+	console.log(camera.aspect)
 	camera.updateProjectionMatrix()
 }
 
