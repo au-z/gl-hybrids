@@ -1,9 +1,22 @@
 import * as THREE from 'three'
 
-function Scene({clearColor}, value) {
-  if(value) return value
-  const scene = new THREE.Scene()
+function HybridsScene(invalidate) {
+  THREE.Scene.apply(this, arguments)
+  this.invalidate = invalidate
+}
+
+HybridsScene.prototype = Object.create(THREE.Scene.prototype)
+HybridsScene.prototype.addInvalidate = function(obj) {
+  const result = this.add(obj)
+  this.invalidate()
+  return result
+}
+HybridsScene.prototype.constructor = THREE.Scene
+
+function Scene({clearColor}, invalidate) {
+  const scene = new HybridsScene(invalidate)
   scene.background = new THREE.Color(clearColor)
+
   // scene.add(new THREE.AxesHelper(1))
   return scene
 }

@@ -1,15 +1,24 @@
-import style from './gl-record.styl'
-import { Hybrids, html } from 'hybrids'
-import gl from './base/glContext'
+import style from 'src/gl/gl-record.styl'
+import { Hybrids, html, render } from 'hybrids'
+import {querySelectorDeep} from 'src/util/BrowserHelpers'
 
 function Recorder({canvas}) {
 	const mediaSource = new MediaSource()
 	mediaSource.addEventListener('sourceopen', (e) => {
 		sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"')
 	}, false)
+
 	let mediaRecorder
 	let recordedChunks
 	let sourceBuffer
+
+	if(!canvas) {
+		console.warn('<gl-record> Canvas not found.')
+		return {
+			start: () => console.warn('<gl-record> Cannot start recording. No canvas found!'),
+			stop: () => console.warn('<gl-record> Cannot start recording. No canvas found!'),
+		}
+	}
 
 	const stream = canvas.captureStream(24)
 
@@ -44,6 +53,7 @@ function Recorder({canvas}) {
 		host.active = true
 		recordedChunks = []
 
+		console.log(host.canvas)
 		mediaRecorder = tryCreateRecorder(stream)
 
 		mediaRecorder.onstop = (e) => {
@@ -78,10 +88,7 @@ function Recorder({canvas}) {
 		}, 100)
 	}
 
-	return {
-		start,
-		stop,
-	}
+	return {start, stop}
 }
 
 interface GlRecord extends HTMLElement {
@@ -89,15 +96,14 @@ interface GlRecord extends HTMLElement {
 }
 
 export default {
-	...gl,
-	active: false,
+	selector: '',
+	canvas: ({ownerDocument, selector}) => querySelectorDeep(ownerDocument.body, selector),
 	recorder: Recorder,
+	active: false,
 	render: ({recorder, active}) => html`
 		<style>${style.toString()}</style>
 		<div class="gl-record">
-			<div class="record ${active ? 'active' : ''}"
-				title="${active ? 'Stop' : 'Record'}"
-				onclick="${!active ? recorder.start : recorder.stop}"></div>
+			<div class="record ${active ? 'active' : ''}" title="${active ? 'Stop' : 'Record'}" onclick="${!active ? recorder.start : recorder.stop}"></div>
 		</div>
 	`,
 } as Hybrids<GlRecord>

@@ -1,4 +1,4 @@
-import style from './gl-camera-tools.styl'
+import style from 'src/gl/gl-camera-tools.styl'
 import { parent, Hybrids, html } from 'hybrids'
 import { GlCamera } from '.'
 

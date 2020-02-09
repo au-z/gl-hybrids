@@ -1,24 +1,21 @@
-import GlObject from './gl-object'
+import GlObject from 'src/gl/gl-object'
 
-import GlCanvas from './gl-canvas'
+import GlCanvas from 'src/gl/gl-canvas'
 
-import GlSceneOutliner from './gl-scene-outliner'
+import GlSceneOutliner from 'src/gl/gl-scene-outliner'
 
-import GlCamera from './gl-camera'
-	import GlCameraTools from './gl-camera-tools'
-	import GlOrbitControl from './gl-orbit-control'
-import GlRecord from './gl-record'
+import GlCamera from 'src/gl/gl-camera'
+	import GlCameraTools from 'src/gl/gl-camera-tools'
+	import GlOrbitControl from 'src/gl/gl-orbit-control'
+import GlRecord from 'src/gl/gl-record'
 
-import GlModel from './gl-model'
+import GlModel from 'src/gl/gl-model'
 
-import GlMesh from './gl-mesh'
-	import GlGeometry from './gl-geometry'
-	import GlMaterial from './gl-material'
+import GlMesh from 'src/gl/gl-mesh'
+	import GlGeometry from 'src/gl/gl-geometry'
+	import GlMaterial from 'src/gl/gl-material'
 
-import GlPointLight from './gl-point-light'
-import GlDirectionalLight from './gl-directional-light'
-import GlHemisphereLight from './gl-hemisphere-light'
-import GlThreePointLight from './gl-three-point-light'
+import {GlPointLight, GlDirectionalLight, GlHemisphereLight, GlThreePointLight} from 'src/gl/lights'
 
 export {
 	GlObject,

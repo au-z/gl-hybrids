@@ -1,5 +1,5 @@
 import {parent, Hybrids} from 'hybrids'
-import GlCanvas from '../../gl/gl-canvas'
+import GlCanvas from 'src/gl/gl-canvas'
 
 interface GlContext extends HTMLElement {
   [key: string]: any

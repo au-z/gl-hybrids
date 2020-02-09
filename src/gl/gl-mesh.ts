@@ -1,11 +1,11 @@
 import {Mesh, BoxGeometry, MeshBasicMaterial, PointLight} from 'three'
 import {Hybrids, children} from 'hybrids'
-import {GlObject3D} from './gl-object'
+import {GlObject3D} from 'src/gl/gl-object'
 
-import GlGeometry from './gl-geometry'
-import GlMaterial from './gl-material'
+import GlGeometry from 'src/gl/gl-geometry'
+import GlMaterial from 'src/gl/gl-material'
 import sceneObject from 'src/factory/sceneObject'
-import glObject from './base/glObject'
+import glObject from 'src/gl/base/glObject'
 
 function childOrDefault(property: string, hybrids: Hybrids<HTMLElement>, defaultVal: any) {
   const childElements = `_c_${property}`

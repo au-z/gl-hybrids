@@ -1,9 +1,7 @@
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
-import { Hybrids, property, html, dispatch } from "hybrids"
-import { mapToEnum } from "../util/Map"
-import glObject from './base/glObject'
-import sceneObject from 'src/factory/sceneObject'
-import { Object3D } from 'three'
+import { Hybrids, property, dispatch } from "hybrids"
+import { mapToEnum } from "src/util/Map"
+import glObject from 'src/gl/base/glObject'
 
 enum MODEL_TYPE {
   gltf = 'GLTF'

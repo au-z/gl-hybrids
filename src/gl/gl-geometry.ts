@@ -1,6 +1,6 @@
 import { property, Hybrids, html } from 'hybrids'
 import * as THREE from 'three'
-import { mapToEnum } from '../util/Map'
+import { mapToEnum } from 'src/util/Map'
 
 enum PRIMITIVE {
   box = 'BOX',

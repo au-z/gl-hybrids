@@ -1,6 +1,6 @@
 import { parent, Hybrids, html } from 'hybrids'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import GlCamera from './gl-camera'
+import GlCamera from 'src/gl/gl-camera'
 
 interface GlOrbitControl extends HTMLElement {
 	[key: string]: any

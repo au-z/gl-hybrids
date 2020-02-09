@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import {Hybrids, property} from 'hybrids'
-import {mapToEnum} from '../util/Map'
+import {mapToEnum} from 'src/util/Map'
 
-import gl from './base/glContext'
+import gl from 'src/gl/base/glContext'
 import { dispatchOnCreate } from 'src/factories'
-import glObject from './base/glObject'
+import glObject from 'src/gl/base/glObject'
 
 enum CAMERATYPE {
 	perspective = 'PERSPECTIVE',

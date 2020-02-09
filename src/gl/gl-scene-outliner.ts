@@ -1,9 +1,11 @@
 import style from './gl-scene-outliner.styl'
 import { Hybrids, html} from 'hybrids'
-import gl from './base/glContext'
+import gl from 'src/gl/base/glContext'
 
-function typeToIcon(type) {
+function mapIcon(type) {
 	switch(type.toUpperCase()) {
+		case 'PERSPECTIVECAMERA':
+		case 'ISOMETRICCAMERA': return 'fa-video-camera'
 		case 'DIRECTIONALLIGHT':
 		case 'HEMISPHERELIGHT':
 		case 'POINTLIGHT': return 'fa-lightbulb-o'
@@ -19,16 +21,37 @@ function typeToIcon(type) {
 }
 
 const logAsset = (a) => console.log(a)
-const assetType = (a) => a.constructor?.name || a.type || typeof a
+
+const assetType = (a) => a?.constructor?.name || a?.type || typeof a
+
+const showableChildren = (a) => ![
+	'HEMISPHERELIGHTHELPER',
+	'DIRECTIONALLIGHTHELPER',
+	'POINTLIGHTHELPER',
+].includes(assetType(a).toUpperCase())
 
 const renderChildren = (arr) => html`
 	<ul class="assets">${arr.map((a) => html`
-		<li onclick="${logAsset.bind(null, a)}">
-			<i class="fa ${typeToIcon(assetType(a))}"></i>
-			<span>${assetType(a)}</span>
+		<li class="asset" onclick="${logAsset.bind(null, a)}">
+			${renderAsset(a)}
 		</li>
-		${a.children?.length > 0 && renderChildren(a.children)}
+		${a.children?.length > 0 && showableChildren(a) && renderChildren(a.children)}
 	`)}</ul>`
+
+const renderCamera = (cam) => html`
+	<div class="camera-asset" onclick="${logAsset.bind(null, cam)}">
+		${cam && renderAsset(cam)}
+	</div>`
+
+const renderAsset = (a) => html`
+	<i class="fa ${mapIcon(assetType(a))}"></i>
+	<span class="name">
+		${a.name || assetType(a)}
+	</span>&nbsp;
+	${!!a.name && html`<span class="type">
+		(${assetType(a)})
+	</span>`}
+`
 
 interface GlSceneOutliner extends HTMLElement {
 	[key: string]: any
@@ -36,9 +59,13 @@ interface GlSceneOutliner extends HTMLElement {
 
 export default {
 	...gl,
-	render: ({scene}) => html`
+	render: ({scene, camera}) => html`
 		<style>${style.toString()}</style>
 		<div class="scene-outliner">
+			<header>
+				<div onclick="toggleClose"><i class="fa fa-times"></i></div>
+			</header>
+			${renderCamera(camera)}
 			${renderChildren(scene.children)}
 		</div>
 	`,

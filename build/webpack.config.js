@@ -7,6 +7,8 @@ const load = (test, ...loaders) => ({
 	test, use: loaders, exclude: [/node_modules/],
 })
 
+const css = {loader: 'css-loader', options: {modules: true}}
+
 module.exports = function(env, argv) {
 	return {
 		mode: env.prod ? 'production' : 'development',
@@ -52,7 +54,7 @@ module.exports = function(env, argv) {
 			}),
 			new CopyWebpackPlugin([
 				{from: path.resolve(__dirname, '../static'), to: 'static'},
-			], {logLevel: 'debug'}),
+			]),
 		],
 
 		devServer: {
