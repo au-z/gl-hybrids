@@ -8,7 +8,7 @@ define("app-root", {
 	render: () => html`
 		<gl-canvas id="gl-canvas" width="100vw" height="100vh" clear-color="0x35383a">
 			<gl-record selector="canvas#gl-canvas"></gl-record>
-			<gl-scene-outliner></gl-scene-outliner>
+			<!-- <gl-scene-outliner></gl-scene-outliner> -->
 
 			<gl-camera name="Camera" position="[1, 0.7, 2.4]" type="perspective">
 				<gl-orbit-control></gl-orbit-control>

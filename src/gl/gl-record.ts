@@ -1,5 +1,5 @@
 import style from 'src/gl/gl-record.styl'
-import { Hybrids, html, render } from 'hybrids'
+import {Hybrids, html} from 'hybrids'
 import {querySelectorDeep} from 'src/util/BrowserHelpers'
 
 function Recorder({canvas}) {
@@ -103,7 +103,7 @@ export default {
 	render: ({recorder, active}) => html`
 		<style>${style.toString()}</style>
 		<div class="gl-record">
-			<div class="record ${active ? 'active' : ''}" title="${active ? 'Stop' : 'Record'}" onclick="${!active ? recorder.start : recorder.stop}"></div>
+			<div class="${{record: true, active}}" title="${active ? 'Stop' : 'Record'}" onclick="${!active ? recorder.start : recorder.stop}"></div>
 		</div>
 	`,
 } as Hybrids<GlRecord>
