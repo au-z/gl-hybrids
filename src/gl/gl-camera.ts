@@ -22,7 +22,7 @@ function Camera({type, fov, aspect, near, far}: GlCamera) {
 	}
 }
 
-function updateCamera({canvas, camera}) {
+function updateCamera({canvas, camera}: GlCamera) {
 	camera.aspect = canvas.clientWidth / canvas.clientHeight
 	camera.updateProjectionMatrix()
 }
@@ -42,7 +42,7 @@ export default {
 	camera: dispatchOnCreate('load-camera', {
 		get: Camera,
 		connect: (host, key) => {
-			window.addEventListener('resize', () => updateCamera(host as any))
+			window.addEventListener('resize', () => updateCamera(host))
 		},
 	}),
 } as Hybrids<GlCamera>

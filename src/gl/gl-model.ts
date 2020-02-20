@@ -4,7 +4,7 @@ import { mapToEnum } from "src/util/Map"
 import glObject from 'src/gl/base/glObject'
 
 enum MODEL_TYPE {
-	gltf = 'GLTF'
+	gltf = 'GLTF',
 }
 
 const fetchModel = (src) => new Promise((res, rej) =>

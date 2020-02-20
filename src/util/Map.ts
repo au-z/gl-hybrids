@@ -1,4 +1,4 @@
-const mapToEnum = (enumeration, defaultVal, key) => enumeration[key?.toLowerCase()] || defaultVal
+const mapToEnum = (enumeration, defaultVal, key) => enumeration[key?.toLowerCase()] || enumeration[key?.toUpperCase()] || defaultVal
 
 export {
 	mapToEnum,

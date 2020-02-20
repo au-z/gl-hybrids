@@ -1,35 +1,29 @@
-import {Mesh, BoxGeometry, MeshBasicMaterial, PointLight} from 'three'
-import {Hybrids, children} from 'hybrids'
-import {GlObject3D} from 'src/gl/gl-object'
+import {Mesh, BoxGeometry, MeshBasicMaterial} from 'three'
+import {Hybrids, dispatch} from 'hybrids'
+import {GlObject3D} from 'src/gl/base/glObject'
 
 import GlGeometry from 'src/gl/gl-geometry'
 import GlMaterial from 'src/gl/gl-material'
-import sceneObject from 'src/factory/sceneObject'
 import glObject from 'src/gl/base/glObject'
-
-function childOrDefault(property: string, hybrids: Hybrids<HTMLElement>, defaultVal: any) {
-  const childElements = `_c_${property}`
-  return {
-    [childElements]: children(hybrids),
-    [property]: (host) => {
-      if(host[childElements]?.length > 0 && host[childElements][0][property] != null) {
-        return host[childElements][0][property]
-      } else {
-        return defaultVal
-      }
-    },
-  }
-}
+import childOrDefault from './mixins/childOrDefault'
 
 interface GlMesh extends GlObject3D {
-  [key: string]: any
+	[key: string]: any
 }
 
 export default {
-  ...glObject(({mesh}) => mesh),
-  ...childOrDefault('geometry', GlGeometry, new BoxGeometry(1, 1, 1)),
-  ...childOrDefault('material', GlMaterial, new MeshBasicMaterial({color: 0x999999})),
-  mesh: sceneObject({
-    get: ({geometry, material}, value) => value || new Mesh(geometry, material),
-  }),
+	...glObject(({mesh}) => mesh),
+	...childOrDefault(GlGeometry, 'geometry', ({mesh}) => mesh),
+	...childOrDefault(GlMaterial, 'material', ({mesh}) => mesh),
+	mesh: {
+		get: (host, value) => value ?? new Mesh(new BoxGeometry(1, 1, 1), new MeshBasicMaterial({color: 0x999999})),
+		connect: (host, key) => {
+			host.addEventListener('update', (e: CustomEvent) => {
+				console.log('<gl-mesh> event: update', e.detail)
+				host[key].children.forEach((c) => c.update && c.update())
+			})
+			host[key] && dispatch(host, 'scene-add', {detail: host[key], bubbles: true, composed: true})
+			return () => dispatch(host, 'scene-del', {detail: host[key].id, bubbles: true, composed: true})
+		},
+	},
 } as Hybrids<GlMesh>

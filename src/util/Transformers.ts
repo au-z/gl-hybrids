@@ -19,7 +19,7 @@ const Transformers = {
 	},
 	hex: {
 		color: (property) => ({
-			get: (color) => color.getHex(),
+			get: (color) => color?.getHex(),
 			set: (obj, hex) => {
 				obj[property].set(hex)
 				return hex

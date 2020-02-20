@@ -15,6 +15,5 @@ interface GlGeometry extends HTMLElement {
 
 export default {
   primitive: property(mapToEnum.bind(null, PRIMITIVE, PRIMITIVE.box)),
-  geometry: () => new THREE.TorusGeometry(0.5, 0.2, 32, 32),
-  render: ({geometry}) => html`<div>${JSON.stringify(geometry)}</div>`
+  geometry: () => new THREE.TorusGeometry(0.5, 0.2, 64, 64),
 } as Hybrids<GlGeometry>

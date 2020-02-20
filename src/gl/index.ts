@@ -15,6 +15,8 @@ import GlMesh from 'src/gl/gl-mesh'
 	import GlGeometry from 'src/gl/gl-geometry'
 	import GlMaterial from 'src/gl/gl-material'
 
+import GlTexture from 'src/gl/textures/gl-texture'
+
 import {GlPointLight, GlDirectionalLight, GlHemisphereLight, GlThreePointLight} from 'src/gl/lights'
 
 export {
@@ -29,6 +31,7 @@ export {
 	GlMesh,
 	GlGeometry,
 	GlMaterial,
+	GlTexture,
 	GlPointLight,
 	GlDirectionalLight,
 	GlHemisphereLight,
