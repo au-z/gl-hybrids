@@ -24,7 +24,7 @@
 		"copy-webpack-plugin": "^5.1.1",
 		"core-js": "^3.6.4",
 		"css-loader": "^3.4.2",
-		"electron": "^13.6.6",
+		"electron": "^18.3.7",
 		"font-awesome": "^4.7.0",
 		"html-webpack-plugin": "^5.5.0",
 		"hybrids": "^4.1.3",
